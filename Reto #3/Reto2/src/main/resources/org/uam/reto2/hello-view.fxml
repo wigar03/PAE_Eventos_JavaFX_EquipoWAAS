@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="580.0" prefWidth="920.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.uam.reto2.HelloController">
+<BorderPane prefHeight="560.0" prefWidth="900.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.uam.reto2.HelloController">
     
     <!-- Parte Superior: MenuBar y ToolBar -->
     <top>
@@ -62,7 +62,7 @@
         </VBox>
     </top>
 
-    <!-- Contenido Central: Formulario y Catálogo con Imágenes -->
+    <!-- Contenido Central: Formulario y Catálogo -->
     <center>
         <HBox spacing="16.0" BorderPane.alignment="CENTER">
             <padding>
@@ -104,18 +104,17 @@
                 </HBox>
             </VBox>
 
-            <!-- Panel Derecho: TableView con Imágenes -->
+            <!-- Panel Derecho: TableView -->
             <VBox spacing="10.0" styleClass="card-panel" HBox.hgrow="ALWAYS">
                 <Label styleClass="section-title" text="Catálogo de Artesanías Nicaragüenses" />
 
                 <TableView fx:id="tblProductos" VBox.vgrow="ALWAYS">
                     <columns>
-                        <TableColumn fx:id="colImagen" prefWidth="55.0" style="-fx-alignment: CENTER;" text="Foto" />
-                        <TableColumn fx:id="colCodigo" prefWidth="85.0" text="Código" />
-                        <TableColumn fx:id="colNombre" prefWidth="200.0" text="Nombre" />
-                        <TableColumn fx:id="colCategoria" prefWidth="95.0" text="Categoría" />
-                        <TableColumn fx:id="colPrecio" prefWidth="95.0" text="Precio (C$)" />
-                        <TableColumn fx:id="colCantidad" prefWidth="80.0" text="Stock" />
+                        <TableColumn fx:id="colCodigo" prefWidth="90.0" text="Código" />
+                        <TableColumn fx:id="colNombre" prefWidth="220.0" text="Nombre" />
+                        <TableColumn fx:id="colCategoria" prefWidth="100.0" text="Categoría" />
+                        <TableColumn fx:id="colPrecio" prefWidth="100.0" text="Precio (C$)" />
+                        <TableColumn fx:id="colCantidad" prefWidth="90.0" text="Stock" />
                     </columns>
                     <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

@@ -6,20 +6,10 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.VPos;
-import javafx.scene.SnapshotParameters;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.TextAlignment;
 import org.uam.reto2.model.Producto;
 
 import java.net.URL;
@@ -55,9 +45,6 @@ public class HelloController implements Initializable {
     private TableView<Producto> tblProductos;
 
     @FXML
-    private TableColumn<Producto, Image> colImagen;
-
-    @FXML
     private TableColumn<Producto, String> colCodigo;
 
     @FXML
@@ -77,7 +64,7 @@ public class HelloController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // 1. Opciones del ComboBox de categorías
+        // 1. Opciones de categorías
         cbCategoria.getItems().addAll("Textil", "Cerámica", "Madera", "Cuero", "Joyería", "Otro");
         cbCategoria.setValue("Textil");
 
@@ -87,28 +74,6 @@ public class HelloController implements Initializable {
         colCategoria.setCellValueFactory(new PropertyValueFactory<>("categoria"));
         colPrecio.setCellValueFactory(new PropertyValueFactory<>("precio"));
         colCantidad.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
-
-        // Configurar columna de imagen con ImageView
-        colImagen.setCellValueFactory(new PropertyValueFactory<>("imagen"));
-        colImagen.setCellFactory(col -> new TableCell<>() {
-            private final ImageView imageView = new ImageView();
-            {
-                imageView.setFitWidth(36);
-                imageView.setFitHeight(36);
-                imageView.setPreserveRatio(true);
-            }
-
-            @Override
-            protected void updateItem(Image img, boolean empty) {
-                super.updateItem(img, empty);
-                if (empty || img == null) {
-                    setGraphic(null);
-                } else {
-                    imageView.setImage(img);
-                    setGraphic(imageView);
-                }
-            }
-        });
 
         // 3. Vincular lista a la tabla
         tblProductos.setItems(listaProductos);
@@ -120,17 +85,17 @@ public class HelloController implements Initializable {
             }
         });
 
-        // 4. Cargar artesanías iniciales de muestra
+        // 4. Cargar artesanías iniciales
         cargarDatosIniciales();
         actualizarEstado("Catálogo cargado con " + listaProductos.size() + " artesanías.");
     }
 
     private void cargarDatosIniciales() {
-        listaProductos.add(new Producto("ART-001", "Hamaca Matrimonial Masaya", "Textil", 1250.00, 15, generarIcono("HM", "#0284c7")));
-        listaProductos.add(new Producto("ART-002", "Jarrón de Cerámica Negra", "Cerámica", 450.00, 20, generarIcono("JR", "#d97706")));
-        listaProductos.add(new Producto("ART-003", "Máscara de Madera El Güegüense", "Madera", 680.00, 8, generarIcono("GG", "#dc2626")));
-        listaProductos.add(new Producto("ART-004", "Faja de Cuero Camoapa", "Cuero", 350.00, 25, generarIcono("CR", "#78350f")));
-        listaProductos.add(new Producto("ART-005", "Aretes de Filigrana", "Joyería", 820.00, 12, generarIcono("AR", "#475569")));
+        listaProductos.add(new Producto("ART-001", "Hamaca Matrimonial Masaya", "Textil", 1250.00, 15));
+        listaProductos.add(new Producto("ART-002", "Jarrón de Cerámica Negra", "Cerámica", 450.00, 20));
+        listaProductos.add(new Producto("ART-003", "Máscara El Güegüense", "Madera", 680.00, 8));
+        listaProductos.add(new Producto("ART-004", "Faja de Cuero Camoapa", "Cuero", 350.00, 25));
+        listaProductos.add(new Producto("ART-005", "Aretes de Filigrana", "Joyería", 820.00, 12));
     }
 
     /**
@@ -186,9 +151,7 @@ public class HelloController implements Initializable {
             actualizarEstado("✅ Artesanía '" + codigo + "' actualizada.");
             mostrarAlerta(Alert.AlertType.INFORMATION, "Actualizado", "La artesanía fue actualizada correctamente.");
         } else {
-            String iniciales = obtenerIniciales(nombre);
-            Image icono = generarIcono(iniciales, obtenerColorPorCategoria(categoria));
-            Producto nuevo = new Producto(codigo, nombre, categoria, precio, cantidad, icono);
+            Producto nuevo = new Producto(codigo, nombre, categoria, precio, cantidad);
             listaProductos.add(nuevo);
             tblProductos.getSelectionModel().select(nuevo);
             actualizarEstado("✅ Artesanía '" + codigo + "' agregada al catálogo.");
@@ -280,7 +243,7 @@ public class HelloController implements Initializable {
     @FXML
     private void onAcercaDe(ActionEvent event) {
         mostrarAlerta(Alert.AlertType.INFORMATION, "Acerca de la Tienda",
-                "Tienda de Artesanías Nicaragüenses\nReto #3 - Menús, ToolBar, Eventos y TableView con Imágenes\nDesarrollado para Programación de Escritorio - UAM");
+                "Tienda de Artesanías Nicaragüenses\nReto #3 - Menús, ToolBar, Eventos y Navegación\nDesarrollado para Programación de Escritorio - UAM");
     }
 
     /**
@@ -336,48 +299,5 @@ public class HelloController implements Initializable {
         alerta.setHeaderText(null);
         alerta.setContentText(mensaje);
         alerta.showAndWait();
-    }
-
-    private Image generarIcono(String texto, String colorHex) {
-        Canvas canvas = new Canvas(48, 48);
-        GraphicsContext gc = canvas.getGraphicsContext2D();
-
-        gc.setFill(Color.web(colorHex));
-        gc.fillRoundRect(2, 2, 44, 44, 12, 12);
-
-        gc.setStroke(Color.WHITE);
-        gc.setLineWidth(1.5);
-        gc.strokeRoundRect(2, 2, 44, 44, 12, 12);
-
-        gc.setFill(Color.WHITE);
-        gc.setFont(Font.font("Segoe UI", FontWeight.BOLD, 15));
-        gc.setTextAlign(TextAlignment.CENTER);
-        gc.setTextBaseline(VPos.CENTER);
-        gc.fillText(texto, 24, 24);
-
-        SnapshotParameters params = new SnapshotParameters();
-        params.setFill(Color.TRANSPARENT);
-        return canvas.snapshot(params, null);
-    }
-
-    private String obtenerIniciales(String nombre) {
-        String[] partes = nombre.trim().split("\\s+");
-        if (partes.length >= 2) {
-            return (partes[0].substring(0, 1) + partes[1].substring(0, 1)).toUpperCase();
-        } else if (!nombre.isEmpty()) {
-            return nombre.substring(0, Math.min(2, nombre.length())).toUpperCase();
-        }
-        return "AR";
-    }
-
-    private String obtenerColorPorCategoria(String categoria) {
-        return switch (categoria != null ? categoria : "") {
-            case "Textil" -> "#0284c7";
-            case "Cerámica" -> "#d97706";
-            case "Madera" -> "#dc2626";
-            case "Cuero" -> "#78350f";
-            case "Joyería" -> "#475569";
-            default -> "#2563eb";
-        };
     }
 }

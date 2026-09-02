@@ -1,7 +1,5 @@
 package org.uam.reto2.model;
 
-import javafx.scene.image.Image;
-
 /**
  * Modelo de datos para las artesanías del catálogo.
  */
@@ -11,18 +9,16 @@ public class Producto {
     private String categoria;
     private double precio;
     private int cantidad;
-    private Image imagen;
 
     public Producto() {
     }
 
-    public Producto(String codigo, String nombre, String categoria, double precio, int cantidad, Image imagen) {
+    public Producto(String codigo, String nombre, String categoria, double precio, int cantidad) {
         this.codigo = codigo;
         this.nombre = nombre;
         this.categoria = categoria;
         this.precio = precio;
         this.cantidad = cantidad;
-        this.imagen = imagen;
     }
 
     public String getCodigo() {
@@ -63,13 +59,5 @@ public class Producto {
 
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
-    }
-
-    public Image getImagen() {
-        return imagen;
-    }
-
-    public void setImagen(Image imagen) {
-        this.imagen = imagen;
     }
 }
