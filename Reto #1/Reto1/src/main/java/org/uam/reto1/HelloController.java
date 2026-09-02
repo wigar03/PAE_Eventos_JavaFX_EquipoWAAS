@@ -76,7 +76,6 @@ public class HelloController implements Initializable {
         listaProductos.add(new Producto("P004", "Azúcar Blanca 1lb", 14.50, 40));
     }
 
-
     /**
      * Evento del botón Guardar: delega la acción al método de lógica.
      */
@@ -102,10 +101,6 @@ public class HelloController implements Initializable {
     private void onLimpiar(ActionEvent event) {
         limpiarFormulario();
     }
-
-    // =========================================================================
-    // MÉTODOS DE LÓGICA DE NEGOCIO Y CONTROL (Responsabilidades separadas)
-    // =========================================================================
 
     /**
      * Coordina el proceso de validación, registro y actualización del producto.
@@ -189,7 +184,7 @@ public class HelloController implements Initializable {
         String codigo = txtBuscar.getText().trim();
 
         if (codigo.isEmpty()) {
-            lblResultado.setText("⚠️ Ingrese el código de un producto para buscar.");
+            lblResultado.setText("Ingrese el código de un producto para buscar.");
             return;
         }
 
@@ -197,10 +192,10 @@ public class HelloController implements Initializable {
         if (encontrado != null) {
             tblProductos.getSelectionModel().select(encontrado);
             tblProductos.scrollTo(encontrado);
-            lblResultado.setText(String.format("🔎 Encontrado: %s | Existencias: %d unidades | Precio: C$ %.2f",
+            lblResultado.setText(String.format("Encontrado: %s | Existencias: %d unidades | Precio: C$ %.2f",
                     encontrado.getNombre(), encontrado.getCantidad(), encontrado.getPrecio()));
         } else {
-            lblResultado.setText("❌ No se encontró ningún producto con el código '" + codigo + "'.");
+            lblResultado.setText("No se encontró ningún producto con el código '" + codigo + "'.");
         }
     }
 

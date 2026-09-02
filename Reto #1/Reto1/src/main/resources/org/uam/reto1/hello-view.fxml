@@ -53,7 +53,7 @@
 
                 <!-- Botones de Acción (ActionEvent) -->
                 <HBox spacing="10.0">
-                    <Button fx:id="btnGuardar" maxWidth="Infinity" onAction="#onGuardar" styleClass="btn-primary" text="💾 Guardar" HBox.hgrow="ALWAYS" />
+                    <Button fx:id="btnGuardar" maxWidth="Infinity" onAction="#onGuardar" styleClass="btn-primary" text="Guardar" HBox.hgrow="ALWAYS" />
                     <Button fx:id="btnLimpiar" onAction="#onLimpiar" styleClass="btn-secondary" text="Limpiar" />
                 </HBox>
             </VBox>
@@ -63,7 +63,7 @@
                 <Label styleClass="section-title" text="Consulta Rápida de Existencias" />
                 
                 <!-- Búsqueda con KeyEvent (ENTER) -->
-                <TextField fx:id="txtBuscar" onKeyPressed="#onBuscar" promptText="🔍 Ingrese el código y presione ENTER para buscar existencias..." />
+                <TextField fx:id="txtBuscar" onKeyPressed="#onBuscar" promptText="Ingrese el código y presione ENTER para buscar existencias..." />
                 
                 <!-- Mensaje de Resultado -->
                 <Label fx:id="lblResultado" styleClass="lbl-resultado" text="Presione ENTER en el buscador para consultar existencias." wrapText="true" />

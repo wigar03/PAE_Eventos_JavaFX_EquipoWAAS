@@ -50,13 +50,13 @@
             <!-- 2. ToolBar con Nuevo, Guardar y Buscar -->
             <ToolBar>
                 <items>
-                    <Button onAction="#onNuevo" styleClass="btn-toolbar" text="➕ Nuevo" />
-                    <Button onAction="#onGuardar" styleClass="btn-toolbar" text="💾 Guardar" />
+                    <Button onAction="#onNuevo" styleClass="btn-toolbar" text="Nuevo" />
+                    <Button onAction="#onGuardar" styleClass="btn-toolbar" text="Guardar" />
                     <Separator orientation="VERTICAL" />
-                    <TextField fx:id="txtBuscar" onKeyPressed="#onBuscarKeyPressed" prefWidth="240.0" promptText="🔍 Buscar por código o nombre..." />
+                    <TextField fx:id="txtBuscar" onKeyPressed="#onBuscarKeyPressed" prefWidth="240.0" promptText="Buscar por código o nombre..." />
                     <Button onAction="#onBuscar" styleClass="btn-toolbar" text="Buscar" />
                     <Separator orientation="VERTICAL" />
-                    <Button onAction="#onVender" styleClass="btn-toolbar-sell" text="💰 Vender" />
+                    <Button onAction="#onVender" styleClass="btn-toolbar-sell" text="Vender" />
                 </items>
             </ToolBar>
         </VBox>
@@ -99,7 +99,7 @@
                 </VBox>
 
                 <HBox spacing="10.0">
-                    <Button maxWidth="Infinity" onAction="#onGuardar" styleClass="btn-primary" text="💾 Guardar" HBox.hgrow="ALWAYS" />
+                    <Button maxWidth="Infinity" onAction="#onGuardar" styleClass="btn-primary" text="Guardar" HBox.hgrow="ALWAYS" />
                     <Button onAction="#onLimpiar" styleClass="btn-secondary" text="Limpiar" />
                 </HBox>
             </VBox>

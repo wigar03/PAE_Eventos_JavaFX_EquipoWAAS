@@ -226,13 +226,13 @@ public class HelloController implements Initializable {
             existente.setPrecio(precio);
             existente.setCantidad(cantidad);
             tblProductos.refresh();
-            actualizarEstado("✅ Artesanía '" + codigo + "' actualizada.");
+            actualizarEstado("Artesanía '" + codigo + "' actualizada.");
             mostrarAlerta(Alert.AlertType.INFORMATION, "Actualizado", "La artesanía fue actualizada correctamente.");
         } else {
             Producto nuevo = new Producto(codigo, nombre, categoria, precio, cantidad);
             listaProductos.add(nuevo);
             tblProductos.getSelectionModel().select(nuevo);
-            actualizarEstado("✅ Artesanía '" + codigo + "' agregada al catálogo.");
+            actualizarEstado("Artesanía '" + codigo + "' agregada al catálogo.");
             mostrarAlerta(Alert.AlertType.INFORMATION, "Guardado", "Artesanía agregada al catálogo con éxito.");
         }
     }
@@ -249,13 +249,13 @@ public class HelloController implements Initializable {
             if (p.getCodigo().toLowerCase().contains(criterio) || p.getNombre().toLowerCase().contains(criterio)) {
                 tblProductos.getSelectionModel().select(p);
                 tblProductos.scrollTo(p);
-                actualizarEstado(String.format("🔎 Encontrado: %s | Existencias: %d | Precio: C$ %.2f",
+                actualizarEstado(String.format("Encontrado: %s | Existencias: %d | Precio: C$ %.2f",
                         p.getNombre(), p.getCantidad(), p.getPrecio()));
                 return;
             }
         }
 
-        actualizarEstado("❌ No se encontró ninguna artesanía que coincida con: " + criterio);
+        actualizarEstado("No se encontró ninguna artesanía que coincida con: " + criterio);
     }
 
     private void venderProductoSeleccionado() {
@@ -273,7 +273,7 @@ public class HelloController implements Initializable {
         seleccionado.setCantidad(seleccionado.getCantidad() - 1);
         tblProductos.refresh();
         cargarEnFormulario(seleccionado);
-        actualizarEstado("💰 Venta realizada: 1 unidad de " + seleccionado.getNombre() + " (Quedan: " + seleccionado.getCantidad() + ")");
+        actualizarEstado("Venta realizada: 1 unidad de " + seleccionado.getNombre() + " (Quedan: " + seleccionado.getCantidad() + ")");
     }
 
     private void mostrarResumenInventario() {
