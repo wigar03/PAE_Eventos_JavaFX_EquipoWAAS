@@ -57,56 +57,119 @@ public class HelloController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Enlazar columnas con las propiedades de Producto
+        configurarTabla();
+        cargarDatosIniciales();
+    }
+
+    private void configurarTabla() {
         colCodigo.setCellValueFactory(new PropertyValueFactory<>("codigo"));
         colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         colPrecio.setCellValueFactory(new PropertyValueFactory<>("precio"));
         colCantidad.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
-
-        // Asignar lista a la tabla
         tblProductos.setItems(listaProductos);
+    }
 
-        // Datos iniciales de prueba
+    private void cargarDatosIniciales() {
         listaProductos.add(new Producto("P001", "Arroz Faisán 1lb", 18.50, 50));
         listaProductos.add(new Producto("P002", "Frijoles Rojos 1lb", 32.00, 30));
         listaProductos.add(new Producto("P003", "Aceite Corona 1L", 65.00, 15));
         listaProductos.add(new Producto("P004", "Azúcar Blanca 1lb", 14.50, 40));
     }
 
+
     /**
-     * Evento ActionEvent: Guarda o actualiza un producto en el inventario.
+     * Evento del botón Guardar: delega la acción al método de lógica.
      */
     @FXML
     private void onGuardar(ActionEvent event) {
+        guardarProducto();
+    }
+
+    /**
+     * Evento de teclado en el buscador: delega al método de búsqueda al presionar ENTER.
+     */
+    @FXML
+    private void onBuscar(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            buscarProducto();
+        }
+    }
+
+    /**
+     * Evento del botón Limpiar: delega al método de limpieza del formulario.
+     */
+    @FXML
+    private void onLimpiar(ActionEvent event) {
+        limpiarFormulario();
+    }
+
+    // =========================================================================
+    // MÉTODOS DE LÓGICA DE NEGOCIO Y CONTROL (Responsabilidades separadas)
+    // =========================================================================
+
+    /**
+     * Coordina el proceso de validación, registro y actualización del producto.
+     */
+    private void guardarProducto() {
         String codigo = txtCodigo.getText().trim();
         String nombre = txtNombre.getText().trim();
         String precioTexto = txtPrecio.getText().trim();
         String cantidadTexto = txtCantidad.getText().trim();
 
-        // 1. Validar campos vacíos
-        if (codigo.isEmpty() || nombre.isEmpty() || precioTexto.isEmpty() || cantidadTexto.isEmpty()) {
+        // 1. Validar campos obligatorios
+        if (!validarCamposObligatorios(codigo, nombre, precioTexto, cantidadTexto)) {
             mostrarAlerta(Alert.AlertType.WARNING, "Campos Vacíos", "Por favor complete todos los campos.");
             return;
         }
 
-        // 2. Validar valores numéricos
-        double precio;
-        int cantidad;
-        try {
-            precio = Double.parseDouble(precioTexto);
-            cantidad = Integer.parseInt(cantidadTexto);
+        // 2. Validar tipos de datos numéricos
+        Double precio = parsearPrecio(precioTexto);
+        Integer cantidad = parsearCantidad(cantidadTexto);
 
-            if (precio <= 0 || cantidad < 0) {
-                mostrarAlerta(Alert.AlertType.ERROR, "Valores Inválidos", "El precio debe ser mayor a 0 y la cantidad no puede ser negativa.");
-                return;
-            }
-        } catch (NumberFormatException e) {
-            mostrarAlerta(Alert.AlertType.ERROR, "Formato Incorrecto", "El precio y la cantidad deben ser valores numéricos válidos.");
+        if (precio == null || cantidad == null) {
             return;
         }
 
-        // 3. Registrar o actualizar si ya existe el código
-        Producto existente = buscarProducto(codigo);
+        // 3. Registrar o actualizar en la lista
+        registrarOActualizarProducto(codigo, nombre, precio, cantidad);
+        limpiarCamposFormulario();
+    }
+
+    private boolean validarCamposObligatorios(String codigo, String nombre, String precio, String cantidad) {
+        return !codigo.isEmpty() && !nombre.isEmpty() && !precio.isEmpty() && !cantidad.isEmpty();
+    }
+
+    private Double parsearPrecio(String precioTexto) {
+        try {
+            double precio = Double.parseDouble(precioTexto);
+            if (precio <= 0) {
+                mostrarAlerta(Alert.AlertType.ERROR, "Valor Inválido", "El precio debe ser mayor a 0.");
+                return null;
+            }
+            return precio;
+        } catch (NumberFormatException e) {
+            mostrarAlerta(Alert.AlertType.ERROR, "Formato Incorrecto", "El precio debe ser un número decimal válido.");
+            return null;
+        }
+    }
+
+    private Integer parsearCantidad(String cantidadTexto) {
+        try {
+            int cantidad = Integer.parseInt(cantidadTexto);
+            if (cantidad < 0) {
+                mostrarAlerta(Alert.AlertType.ERROR, "Valor Inválido", "La cantidad no puede ser negativa.");
+                return null;
+            }
+            return cantidad;
+        } catch (NumberFormatException e) {
+            mostrarAlerta(Alert.AlertType.ERROR, "Formato Incorrecto", "La cantidad debe ser un número entero válido.");
+            return null;
+        }
+    }
+
+    private void registrarOActualizarProducto(String codigo, String nombre, double precio, int cantidad) {
+        Producto existente = buscarProductoPorCodigo(codigo);
+
         if (existente != null) {
             existente.setNombre(nombre);
             existente.setPrecio(precio);
@@ -117,46 +180,31 @@ public class HelloController implements Initializable {
             listaProductos.add(new Producto(codigo, nombre, precio, cantidad));
             mostrarAlerta(Alert.AlertType.INFORMATION, "Producto Guardado", "Producto registrado correctamente en el inventario.");
         }
-
-        limpiarCampos();
     }
 
     /**
-     * Evento KeyEvent: Busca existencias del producto al presionar la tecla ENTER.
+     * Lógica de consulta de existencias por código.
      */
-    @FXML
-    private void onBuscar(KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER) {
-            String codigo = txtBuscar.getText().trim();
+    private void buscarProducto() {
+        String codigo = txtBuscar.getText().trim();
 
-            if (codigo.isEmpty()) {
-                lblResultado.setText("⚠️ Ingrese el código de un producto para buscar.");
-                return;
-            }
+        if (codigo.isEmpty()) {
+            lblResultado.setText("⚠️ Ingrese el código de un producto para buscar.");
+            return;
+        }
 
-            Producto p = buscarProducto(codigo);
-            if (p != null) {
-                tblProductos.getSelectionModel().select(p);
-                tblProductos.scrollTo(p);
-                lblResultado.setText(String.format("🔎 Encontrado: %s | Existencias: %d unidades | Precio: C$ %.2f",
-                        p.getNombre(), p.getCantidad(), p.getPrecio()));
-            } else {
-                lblResultado.setText("❌ No se encontró ningún producto con el código '" + codigo + "'.");
-            }
+        Producto encontrado = buscarProductoPorCodigo(codigo);
+        if (encontrado != null) {
+            tblProductos.getSelectionModel().select(encontrado);
+            tblProductos.scrollTo(encontrado);
+            lblResultado.setText(String.format("🔎 Encontrado: %s | Existencias: %d unidades | Precio: C$ %.2f",
+                    encontrado.getNombre(), encontrado.getCantidad(), encontrado.getPrecio()));
+        } else {
+            lblResultado.setText("❌ No se encontró ningún producto con el código '" + codigo + "'.");
         }
     }
 
-    /**
-     * Evento ActionEvent: Limpia el formulario y la búsqueda.
-     */
-    @FXML
-    private void onLimpiar(ActionEvent event) {
-        limpiarCampos();
-        txtBuscar.clear();
-        lblResultado.setText("Presione ENTER en el buscador para consultar existencias.");
-    }
-
-    private Producto buscarProducto(String codigo) {
+    private Producto buscarProductoPorCodigo(String codigo) {
         for (Producto p : listaProductos) {
             if (p.getCodigo().equalsIgnoreCase(codigo)) {
                 return p;
@@ -165,7 +213,13 @@ public class HelloController implements Initializable {
         return null;
     }
 
-    private void limpiarCampos() {
+    private void limpiarFormulario() {
+        limpiarCamposFormulario();
+        txtBuscar.clear();
+        lblResultado.setText("Presione ENTER en el buscador para consultar existencias.");
+    }
+
+    private void limpiarCamposFormulario() {
         txtCodigo.clear();
         txtNombre.clear();
         txtPrecio.clear();

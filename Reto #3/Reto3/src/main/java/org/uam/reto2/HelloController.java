@@ -64,30 +64,30 @@ public class HelloController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // 1. Opciones de categorías
+        configurarCategorias();
+        configurarTabla();
+        cargarDatosIniciales();
+        actualizarEstado("Catálogo cargado con " + listaProductos.size() + " artesanías.");
+    }
+
+    private void configurarCategorias() {
         cbCategoria.getItems().addAll("Textil", "Cerámica", "Madera", "Cuero", "Joyería", "Otro");
         cbCategoria.setValue("Textil");
+    }
 
-        // 2. Configuración de columnas
+    private void configurarTabla() {
         colCodigo.setCellValueFactory(new PropertyValueFactory<>("codigo"));
         colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         colCategoria.setCellValueFactory(new PropertyValueFactory<>("categoria"));
         colPrecio.setCellValueFactory(new PropertyValueFactory<>("precio"));
         colCantidad.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
-
-        // 3. Vincular lista a la tabla
         tblProductos.setItems(listaProductos);
 
-        // Cargar datos al seleccionar en la tabla
         tblProductos.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal != null) {
                 cargarEnFormulario(newVal);
             }
         });
-
-        // 4. Cargar artesanías iniciales
-        cargarDatosIniciales();
-        actualizarEstado("Catálogo cargado con " + listaProductos.size() + " artesanías.");
     }
 
     private void cargarDatosIniciales() {
@@ -98,50 +98,128 @@ public class HelloController implements Initializable {
         listaProductos.add(new Producto("ART-005", "Aretes de Filigrana", "Joyería", 820.00, 12));
     }
 
-    /**
-     * Acción: Limpiar formulario para nuevo registro.
-     */
+    // =========================================================================
+    // MANEJADORES DE EVENTOS (Principio SOLID: Single Responsibility Principle)
+    // Los eventos de UI solo despachan la llamada al método con la lógica.
+    // =========================================================================
+
     @FXML
     private void onNuevo(ActionEvent event) {
+        prepararNuevoRegistro();
+    }
+
+    @FXML
+    private void onGuardar(ActionEvent event) {
+        guardarProducto();
+    }
+
+    @FXML
+    private void onBuscar(ActionEvent event) {
+        buscarProducto();
+    }
+
+    @FXML
+    private void onBuscarKeyPressed(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            buscarProducto();
+        }
+    }
+
+    @FXML
+    private void onVender(ActionEvent event) {
+        venderProductoSeleccionado();
+    }
+
+    @FXML
+    private void onResumenVentas(ActionEvent event) {
+        mostrarResumenInventario();
+    }
+
+    @FXML
+    private void onAcercaDe(ActionEvent event) {
+        mostrarInformacionAcercaDe();
+    }
+
+    @FXML
+    private void onSalir(ActionEvent event) {
+        cerrarAplicacion();
+    }
+
+    @FXML
+    private void onLimpiar(ActionEvent event) {
         limpiarFormulario();
+    }
+
+    // =========================================================================
+    // MÉTODOS DE LÓGICA DE NEGOCIO Y CONTROL (Responsabilidades separadas)
+    // =========================================================================
+
+    private void prepararNuevoRegistro() {
+        limpiarCamposFormulario();
         actualizarEstado("Listo para ingresar una nueva artesanía.");
     }
 
-    /**
-     * Acción: Guardar o actualizar producto.
-     */
-    @FXML
-    private void onGuardar(ActionEvent event) {
+    private void guardarProducto() {
         String codigo = txtCodigo.getText().trim();
         String nombre = txtNombre.getText().trim();
         String categoria = cbCategoria.getValue();
         String precioStr = txtPrecio.getText().trim();
         String cantidadStr = txtCantidad.getText().trim();
 
-        // 1. Validar campos vacíos
-        if (codigo.isEmpty() || nombre.isEmpty() || precioStr.isEmpty() || cantidadStr.isEmpty()) {
+        // 1. Validar campos obligatorios
+        if (!validarCamposObligatorios(codigo, nombre, precioStr, cantidadStr)) {
             mostrarAlerta(Alert.AlertType.WARNING, "Campos Vacíos", "Por favor complete todos los datos de la artesanía.");
             return;
         }
 
-        // 2. Validar números
-        double precio;
-        int cantidad;
-        try {
-            precio = Double.parseDouble(precioStr);
-            cantidad = Integer.parseInt(cantidadStr);
+        // 2. Validar valores numéricos
+        Double precio = parsearPrecio(precioStr);
+        Integer cantidad = parsearCantidad(cantidadStr);
 
-            if (precio <= 0 || cantidad < 0) {
-                mostrarAlerta(Alert.AlertType.ERROR, "Datos Inválidos", "El precio debe ser > 0 y la cantidad >= 0.");
-                return;
-            }
-        } catch (NumberFormatException e) {
-            mostrarAlerta(Alert.AlertType.ERROR, "Formato Incorrecto", "Precio y cantidad deben ser valores numéricos válidos.");
+        if (precio == null || cantidad == null) {
             return;
         }
 
-        // 3. Buscar si ya existe para actualizar o registrar
-        Producto existente = buscarProducto(codigo);
+        // 3. Registrar o actualizar
+        registrarOActualizarProducto(codigo, nombre, categoria, precio, cantidad);
+        limpiarCamposFormulario();
+    }
+
+    private boolean validarCamposObligatorios(String codigo, String nombre, String precio, String cantidad) {
+        return !codigo.isEmpty() && !nombre.isEmpty() && !precio.isEmpty() && !cantidad.isEmpty();
+    }
+
+    private Double parsearPrecio(String precioStr) {
+        try {
+            double precio = Double.parseDouble(precioStr);
+            if (precio <= 0) {
+                mostrarAlerta(Alert.AlertType.ERROR, "Datos Inválidos", "El precio debe ser mayor a 0.");
+                return null;
+            }
+            return precio;
+        } catch (NumberFormatException e) {
+            mostrarAlerta(Alert.AlertType.ERROR, "Formato Incorrecto", "El precio debe ser un número válido.");
+            return null;
+        }
+    }
+
+    private Integer parsearCantidad(String cantidadStr) {
+        try {
+            int cantidad = Integer.parseInt(cantidadStr);
+            if (cantidad < 0) {
+                mostrarAlerta(Alert.AlertType.ERROR, "Datos Inválidos", "La cantidad no puede ser negativa.");
+                return null;
+            }
+            return cantidad;
+        } catch (NumberFormatException e) {
+            mostrarAlerta(Alert.AlertType.ERROR, "Formato Incorrecto", "La cantidad debe ser un número entero válido.");
+            return null;
+        }
+    }
+
+    private void registrarOActualizarProducto(String codigo, String nombre, String categoria, double precio, int cantidad) {
+        Producto existente = buscarProductoPorCodigo(codigo);
+
         if (existente != null) {
             existente.setNombre(nombre);
             existente.setCategoria(categoria);
@@ -157,15 +235,9 @@ public class HelloController implements Initializable {
             actualizarEstado("✅ Artesanía '" + codigo + "' agregada al catálogo.");
             mostrarAlerta(Alert.AlertType.INFORMATION, "Guardado", "Artesanía agregada al catálogo con éxito.");
         }
-
-        limpiarFormulario();
     }
 
-    /**
-     * Acción: Buscar artesanía por código o nombre.
-     */
-    @FXML
-    private void onBuscar(ActionEvent event) {
+    private void buscarProducto() {
         String criterio = txtBuscar.getText().trim().toLowerCase();
 
         if (criterio.isEmpty()) {
@@ -186,21 +258,7 @@ public class HelloController implements Initializable {
         actualizarEstado("❌ No se encontró ninguna artesanía que coincida con: " + criterio);
     }
 
-    /**
-     * Evento de teclado para buscar al presionar ENTER.
-     */
-    @FXML
-    private void onBuscarKeyPressed(KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER) {
-            onBuscar(null);
-        }
-    }
-
-    /**
-     * Acción de Ventas: Registrar venta rápida de 1 unidad del producto seleccionado.
-     */
-    @FXML
-    private void onVender(ActionEvent event) {
+    private void venderProductoSeleccionado() {
         Producto seleccionado = tblProductos.getSelectionModel().getSelectedItem();
         if (seleccionado == null) {
             mostrarAlerta(Alert.AlertType.WARNING, "Seleccionar Producto", "Seleccione un producto en la tabla para registrar la venta.");
@@ -218,11 +276,7 @@ public class HelloController implements Initializable {
         actualizarEstado("💰 Venta realizada: 1 unidad de " + seleccionado.getNombre() + " (Quedan: " + seleccionado.getCantidad() + ")");
     }
 
-    /**
-     * Acción de Ventas: Ver resumen de inventario / catálogo.
-     */
-    @FXML
-    private void onResumenVentas(ActionEvent event) {
+    private void mostrarResumenInventario() {
         int totalUnidades = 0;
         double valorTotal = 0;
 
@@ -237,33 +291,21 @@ public class HelloController implements Initializable {
         mostrarAlerta(Alert.AlertType.INFORMATION, "Resumen de Inventario", mensaje);
     }
 
-    /**
-     * Menú Ayuda: Acerca de.
-     */
-    @FXML
-    private void onAcercaDe(ActionEvent event) {
+    private void mostrarInformacionAcercaDe() {
         mostrarAlerta(Alert.AlertType.INFORMATION, "Acerca de la Tienda",
                 "Tienda de Artesanías Nicaragüenses\nReto #3 - Menús, ToolBar, Eventos y Navegación\nDesarrollado para Programación de Escritorio - UAM");
     }
 
-    /**
-     * Salir de la aplicación.
-     */
-    @FXML
-    private void onSalir(ActionEvent event) {
+    private void cerrarAplicacion() {
         Platform.exit();
     }
 
-    /**
-     * Limpiar campos.
-     */
-    @FXML
-    private void onLimpiar(ActionEvent event) {
-        limpiarFormulario();
+    private void limpiarFormulario() {
+        limpiarCamposFormulario();
         actualizarEstado("Formulario limpio.");
     }
 
-    private Producto buscarProducto(String codigo) {
+    private Producto buscarProductoPorCodigo(String codigo) {
         for (Producto p : listaProductos) {
             if (p.getCodigo().equalsIgnoreCase(codigo)) {
                 return p;
@@ -280,7 +322,7 @@ public class HelloController implements Initializable {
         txtCantidad.setText(String.valueOf(p.getCantidad()));
     }
 
-    private void limpiarFormulario() {
+    private void limpiarCamposFormulario() {
         txtCodigo.clear();
         txtNombre.clear();
         cbCategoria.setValue("Textil");
