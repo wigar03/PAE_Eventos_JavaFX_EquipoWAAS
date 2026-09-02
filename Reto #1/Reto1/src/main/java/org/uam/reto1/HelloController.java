@@ -30,6 +30,10 @@ public class HelloController implements Initializable {
     @FXML private TextField txtPrecio;
     @FXML private TextField txtCantidad;
 
+    // --- Componentes FXML de Botones ---
+    @FXML private Button btnGuardar;
+    @FXML private Button btnLimpiar;
+
     // --- Componentes FXML de Búsqueda Rápida ---
     @FXML private TextField txtBuscar;
     @FXML private Label lblResultado;
@@ -55,6 +59,25 @@ public class HelloController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         configurarTabla();
         cargarDatosIniciales();
+        configurarEfectosBotones();
+    }
+
+    /**
+     * Configura transiciones visuales de hover en botones mediante controladores de eventos JavaFX puros.
+     */
+    private void configurarEfectosBotones() {
+        if (btnGuardar != null) {
+            String base = "-fx-background-color: #2563eb; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 4; -fx-padding: 7 14; -fx-cursor: hand;";
+            String hover = "-fx-background-color: #1d4ed8; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 4; -fx-padding: 7 14; -fx-cursor: hand;";
+            btnGuardar.setOnMouseEntered(e -> btnGuardar.setStyle(hover));
+            btnGuardar.setOnMouseExited(e -> btnGuardar.setStyle(base));
+        }
+        if (btnLimpiar != null) {
+            String base = "-fx-background-color: #f1f5f9; -fx-text-fill: #334155; -fx-border-color: #cbd5e1; -fx-border-radius: 4; -fx-background-radius: 4; -fx-font-weight: bold; -fx-padding: 7 14; -fx-cursor: hand;";
+            String hover = "-fx-background-color: #e2e8f0; -fx-text-fill: #334155; -fx-border-color: #cbd5e1; -fx-border-radius: 4; -fx-background-radius: 4; -fx-font-weight: bold; -fx-padding: 7 14; -fx-cursor: hand;";
+            btnLimpiar.setOnMouseEntered(e -> btnLimpiar.setStyle(hover));
+            btnLimpiar.setOnMouseExited(e -> btnLimpiar.setStyle(base));
+        }
     }
 
     /**

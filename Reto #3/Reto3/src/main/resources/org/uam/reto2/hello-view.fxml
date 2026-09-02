@@ -18,13 +18,13 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="560.0" prefWidth="900.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.uam.reto2.HelloController">
+<BorderPane prefHeight="560.0" prefWidth="900.0" style="-fx-font-family: 'Segoe UI', Arial, sans-serif; -fx-font-size: 13px; -fx-background-color: #f1f5f9;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.uam.reto2.HelloController">
     
     <!-- Parte Superior: MenuBar y ToolBar -->
     <top>
         <VBox>
             <!-- 1. Menús Catálogo, Ventas y Ayuda -->
-            <MenuBar>
+            <MenuBar style="-fx-background-color: #ffffff; -fx-border-color: #cbd5e1; -fx-border-width: 0 0 1 0;">
                 <menus>
                     <Menu text="Catálogo">
                         <items>
@@ -50,15 +50,15 @@
             </MenuBar>
 
             <!-- 2. ToolBar con Nuevo, Guardar y Buscar -->
-            <ToolBar>
+            <ToolBar style="-fx-background-color: #f8fafc; -fx-border-color: #cbd5e1; -fx-border-width: 0 0 1 0; -fx-padding: 6 12;">
                 <items>
-                    <Button onAction="#onNuevo" styleClass="btn-toolbar" text="Nuevo" />
-                    <Button onAction="#onGuardar" styleClass="btn-toolbar" text="Guardar" />
+                    <Button onAction="#onNuevo" style="-fx-background-color: #ffffff; -fx-border-color: #cbd5e1; -fx-border-radius: 4; -fx-background-radius: 4; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 5 12;" text="Nuevo" />
+                    <Button onAction="#onGuardar" style="-fx-background-color: #ffffff; -fx-border-color: #cbd5e1; -fx-border-radius: 4; -fx-background-radius: 4; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 5 12;" text="Guardar" />
                     <Separator orientation="VERTICAL" />
-                    <TextField fx:id="txtBuscar" onKeyPressed="#onBuscarKeyPressed" prefWidth="240.0" promptText="Buscar por código o nombre..." />
-                    <Button onAction="#onBuscar" styleClass="btn-toolbar" text="Buscar" />
+                    <TextField fx:id="txtBuscar" onKeyPressed="#onBuscarKeyPressed" prefWidth="240.0" promptText="Buscar por código o nombre..." style="-fx-background-color: white; -fx-border-color: #cbd5e1; -fx-border-radius: 4; -fx-background-radius: 4; -fx-padding: 5 8;" />
+                    <Button onAction="#onBuscar" style="-fx-background-color: #ffffff; -fx-border-color: #cbd5e1; -fx-border-radius: 4; -fx-background-radius: 4; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 5 12;" text="Buscar" />
                     <Separator orientation="VERTICAL" />
-                    <Button onAction="#onVender" styleClass="btn-toolbar-sell" text="Vender" />
+                    <Button onAction="#onVender" style="-fx-background-color: #16a34a; -fx-text-fill: white; -fx-border-radius: 4; -fx-background-radius: 4; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 5 12;" text="Vender" />
                     <Region HBox.hgrow="ALWAYS" />
                     <Button onAction="#volverAlMenu" text="← Volver al Menú" style="-fx-background-color: #21262d; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 5 12; -fx-background-radius: 6; -fx-cursor: hand; -fx-border-color: #484f58; -fx-border-radius: 6;" />
                 </items>
@@ -74,45 +74,45 @@
             </padding>
 
             <!-- Panel Izquierdo: Formulario -->
-            <VBox prefWidth="300.0" spacing="10.0" styleClass="card-panel">
-                <Label styleClass="section-title" text="Datos de la Artesanía" />
+            <VBox prefWidth="300.0" spacing="10.0" style="-fx-background-color: white; -fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #cbd5e1; -fx-border-width: 1; -fx-padding: 14;">
+                <Label style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #1e293b;" text="Datos de la Artesanía" />
 
                 <VBox spacing="3.0">
-                    <Label styleClass="field-label" text="Código:" />
-                    <TextField fx:id="txtCodigo" promptText="Ej. ART-006" />
+                    <Label style="-fx-font-weight: bold; -fx-text-fill: #475569; -fx-font-size: 12px;" text="Código:" />
+                    <TextField fx:id="txtCodigo" promptText="Ej. ART-006" style="-fx-background-color: white; -fx-border-color: #cbd5e1; -fx-border-radius: 4; -fx-background-radius: 4; -fx-padding: 5 8;" />
                 </VBox>
 
                 <VBox spacing="3.0">
-                    <Label styleClass="field-label" text="Nombre / Descripción:" />
-                    <TextField fx:id="txtNombre" promptText="Ej. Tapiz Bordado Solentiname" />
+                    <Label style="-fx-font-weight: bold; -fx-text-fill: #475569; -fx-font-size: 12px;" text="Nombre / Descripción:" />
+                    <TextField fx:id="txtNombre" promptText="Ej. Tapiz Bordado Solentiname" style="-fx-background-color: white; -fx-border-color: #cbd5e1; -fx-border-radius: 4; -fx-background-radius: 4; -fx-padding: 5 8;" />
                 </VBox>
 
                 <VBox spacing="3.0">
-                    <Label styleClass="field-label" text="Categoría:" />
-                    <ComboBox fx:id="cbCategoria" maxWidth="Infinity" />
+                    <Label style="-fx-font-weight: bold; -fx-text-fill: #475569; -fx-font-size: 12px;" text="Categoría:" />
+                    <ComboBox fx:id="cbCategoria" maxWidth="Infinity" style="-fx-background-color: white; -fx-border-color: #cbd5e1; -fx-border-radius: 4; -fx-background-radius: 4; -fx-padding: 3 6;" />
                 </VBox>
 
                 <VBox spacing="3.0">
-                    <Label styleClass="field-label" text="Precio (C$):" />
-                    <TextField fx:id="txtPrecio" promptText="Ej. 450.00" />
+                    <Label style="-fx-font-weight: bold; -fx-text-fill: #475569; -fx-font-size: 12px;" text="Precio (C$):" />
+                    <TextField fx:id="txtPrecio" promptText="Ej. 450.00" style="-fx-background-color: white; -fx-border-color: #cbd5e1; -fx-border-radius: 4; -fx-background-radius: 4; -fx-padding: 5 8;" />
                 </VBox>
 
                 <VBox spacing="3.0">
-                    <Label styleClass="field-label" text="Cantidad / Stock:" />
-                    <TextField fx:id="txtCantidad" promptText="Ej. 10" />
+                    <Label style="-fx-font-weight: bold; -fx-text-fill: #475569; -fx-font-size: 12px;" text="Cantidad / Stock:" />
+                    <TextField fx:id="txtCantidad" promptText="Ej. 10" style="-fx-background-color: white; -fx-border-color: #cbd5e1; -fx-border-radius: 4; -fx-background-radius: 4; -fx-padding: 5 8;" />
                 </VBox>
 
                 <HBox spacing="10.0">
-                    <Button maxWidth="Infinity" onAction="#onGuardar" styleClass="btn-primary" text="Guardar" HBox.hgrow="ALWAYS" />
-                    <Button onAction="#onLimpiar" styleClass="btn-secondary" text="Limpiar" />
+                    <Button maxWidth="Infinity" onAction="#onGuardar" style="-fx-background-color: #2563eb; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 4; -fx-padding: 6 14; -fx-cursor: hand;" text="Guardar" HBox.hgrow="ALWAYS" />
+                    <Button onAction="#onLimpiar" style="-fx-background-color: #f1f5f9; -fx-text-fill: #334155; -fx-border-color: #cbd5e1; -fx-border-radius: 4; -fx-background-radius: 4; -fx-font-weight: bold; -fx-padding: 6 14; -fx-cursor: hand;" text="Limpiar" />
                 </HBox>
             </VBox>
 
             <!-- Panel Derecho: TableView -->
-            <VBox spacing="10.0" styleClass="card-panel" HBox.hgrow="ALWAYS">
-                <Label styleClass="section-title" text="Catálogo de Artesanías Nicaragüenses" />
+            <VBox spacing="10.0" style="-fx-background-color: white; -fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #cbd5e1; -fx-border-width: 1; -fx-padding: 14;" HBox.hgrow="ALWAYS">
+                <Label style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #1e293b;" text="Catálogo de Artesanías Nicaragüenses" />
 
-                <TableView fx:id="tblProductos" VBox.vgrow="ALWAYS">
+                <TableView fx:id="tblProductos" style="-fx-background-color: white; -fx-border-color: #cbd5e1; -fx-border-radius: 4;" VBox.vgrow="ALWAYS">
                     <columns>
                         <TableColumn fx:id="colCodigo" prefWidth="90.0" text="Código" />
                         <TableColumn fx:id="colNombre" prefWidth="220.0" text="Nombre" />
@@ -130,8 +130,8 @@
 
     <!-- Barra de Estado Inferior -->
     <bottom>
-        <HBox styleClass="status-bar" BorderPane.alignment="CENTER">
-            <Label fx:id="lblEstado" text="Listo." />
+        <HBox style="-fx-background-color: #f8fafc; -fx-border-color: #cbd5e1; -fx-border-width: 1 0 0 0; -fx-padding: 6 16;" BorderPane.alignment="CENTER">
+            <Label fx:id="lblEstado" style="-fx-text-fill: #475569;" text="Listo." />
         </HBox>
     </bottom>
 </BorderPane>

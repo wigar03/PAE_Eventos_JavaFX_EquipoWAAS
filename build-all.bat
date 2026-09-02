@@ -16,7 +16,7 @@ cd ..\
 echo [3/4] Instalando Reto #3...
 cd "Reto #3\Reto3"
 call mvnw.cmd install -DskipTests
-cd ..\
+cd ..\..\
 
 echo [4/4] Compilando MenuIntegrador...
 cd "MenuIntegrador"
