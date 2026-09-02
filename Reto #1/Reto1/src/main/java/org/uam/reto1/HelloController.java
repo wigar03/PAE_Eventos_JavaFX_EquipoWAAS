@@ -14,53 +14,52 @@ import org.uam.reto1.model.Producto;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * Controlador de la interfaz del Reto #1: Inventario de Pulpería.
+ * 
+ * Gestiona el formulario de productos, validaciones de tipos de datos, inserción/actualización
+ * en la tabla reactiva (TableView), búsqueda por código con tecla ENTER y navegación de retorno.
+ * 
+ * @author Equipo WAAS
+ */
 public class HelloController implements Initializable {
 
-    // Campos del formulario
-    @FXML
-    private TextField txtCodigo;
+    // --- Componentes FXML del Formulario ---
+    @FXML private TextField txtCodigo;
+    @FXML private TextField txtNombre;
+    @FXML private TextField txtPrecio;
+    @FXML private TextField txtCantidad;
 
-    @FXML
-    private TextField txtNombre;
+    // --- Componentes FXML de Búsqueda Rápida ---
+    @FXML private TextField txtBuscar;
+    @FXML private Label lblResultado;
 
-    @FXML
-    private TextField txtPrecio;
+    // --- Componentes FXML del TableView ---
+    @FXML private TableView<Producto> tblProductos;
+    @FXML private TableColumn<Producto, String> colCodigo;
+    @FXML private TableColumn<Producto, String> colNombre;
+    @FXML private TableColumn<Producto, Double> colPrecio;
+    @FXML private TableColumn<Producto, Integer> colCantidad;
 
-    @FXML
-    private TextField txtCantidad;
-
-    // Campo de búsqueda y etiqueta de resultado
-    @FXML
-    private TextField txtBuscar;
-
-    @FXML
-    private Label lblResultado;
-
-    // Tabla y columnas de productos
-    @FXML
-    private TableView<Producto> tblProductos;
-
-    @FXML
-    private TableColumn<Producto, String> colCodigo;
-
-    @FXML
-    private TableColumn<Producto, String> colNombre;
-
-    @FXML
-    private TableColumn<Producto, Double> colPrecio;
-
-    @FXML
-    private TableColumn<Producto, Integer> colCantidad;
-
-    // Lista en memoria de productos
+    // Lista observable reactiva en memoria para la tabla
     private final ObservableList<Producto> listaProductos = FXCollections.observableArrayList();
 
+    // Callback para retorno al Menú Integrador
+    private Runnable onVolverAlMenu;
+
+    /**
+     * Inicializa el controlador tras la carga del FXML.
+     * Enlaza las columnas de la tabla con los getters de Producto y carga registros iniciales.
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         configurarTabla();
         cargarDatosIniciales();
     }
 
+    /**
+     * Vincula las columnas con las propiedades del modelo y asigna la lista a la tabla.
+     */
     private void configurarTabla() {
         colCodigo.setCellValueFactory(new PropertyValueFactory<>("codigo"));
         colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
@@ -69,6 +68,9 @@ public class HelloController implements Initializable {
         tblProductos.setItems(listaProductos);
     }
 
+    /**
+     * Carga un conjunto inicial de productos en el inventario para demostración.
+     */
     private void cargarDatosIniciales() {
         listaProductos.add(new Producto("P001", "Arroz Faisán 1lb", 18.50, 50));
         listaProductos.add(new Producto("P002", "Frijoles Rojos 1lb", 32.00, 30));
@@ -77,7 +79,9 @@ public class HelloController implements Initializable {
     }
 
     /**
-     * Evento del botón Guardar: delega la acción al método de lógica.
+     * Maneja el clic en el botón Guardar.
+     * 
+     * @param event Evento de acción.
      */
     @FXML
     private void onGuardar(ActionEvent event) {
@@ -85,7 +89,10 @@ public class HelloController implements Initializable {
     }
 
     /**
-     * Evento de teclado en el buscador: delega al método de búsqueda al presionar ENTER.
+     * Maneja eventos de teclado en la barra de búsqueda.
+     * Al presionar ENTER, ejecuta la consulta de existencias.
+     * 
+     * @param event Evento de teclado.
      */
     @FXML
     private void onBuscar(KeyEvent event) {
@@ -95,7 +102,9 @@ public class HelloController implements Initializable {
     }
 
     /**
-     * Evento del botón Limpiar: delega al método de limpieza del formulario.
+     * Maneja el clic en el botón Limpiar.
+     * 
+     * @param event Evento de acción.
      */
     @FXML
     private void onLimpiar(ActionEvent event) {
@@ -103,7 +112,7 @@ public class HelloController implements Initializable {
     }
 
     /**
-     * Coordina el proceso de validación, registro y actualización del producto.
+     * Procesa la validación y guardado (alta o edición) de un producto.
      */
     private void guardarProducto() {
         String codigo = txtCodigo.getText().trim();
@@ -111,7 +120,7 @@ public class HelloController implements Initializable {
         String precioTexto = txtPrecio.getText().trim();
         String cantidadTexto = txtCantidad.getText().trim();
 
-        // 1. Validar campos obligatorios
+        // 1. Validar que no existan campos vacíos
         if (!validarCamposObligatorios(codigo, nombre, precioTexto, cantidadTexto)) {
             mostrarAlerta(Alert.AlertType.WARNING, "Campos Vacíos", "Por favor complete todos los campos.");
             return;
@@ -125,15 +134,21 @@ public class HelloController implements Initializable {
             return;
         }
 
-        // 3. Registrar o actualizar en la lista
+        // 3. Registrar o actualizar en la colección reactiva
         registrarOActualizarProducto(codigo, nombre, precio, cantidad);
         limpiarCamposFormulario();
     }
 
+    /**
+     * Valida que ninguno de los campos de texto obligatorios esté en blanco.
+     */
     private boolean validarCamposObligatorios(String codigo, String nombre, String precio, String cantidad) {
         return !codigo.isEmpty() && !nombre.isEmpty() && !precio.isEmpty() && !cantidad.isEmpty();
     }
 
+    /**
+     * Convierte y valida que el precio sea un número positivo.
+     */
     private Double parsearPrecio(String precioTexto) {
         try {
             double precio = Double.parseDouble(precioTexto);
@@ -148,6 +163,9 @@ public class HelloController implements Initializable {
         }
     }
 
+    /**
+     * Convierte y valida que la cantidad sea un entero no negativo.
+     */
     private Integer parsearCantidad(String cantidadTexto) {
         try {
             int cantidad = Integer.parseInt(cantidadTexto);
@@ -162,6 +180,9 @@ public class HelloController implements Initializable {
         }
     }
 
+    /**
+     * Agrega un nuevo producto o actualiza sus datos si el código ya existe en la lista.
+     */
     private void registrarOActualizarProducto(String codigo, String nombre, double precio, int cantidad) {
         Producto existente = buscarProductoPorCodigo(codigo);
 
@@ -178,7 +199,7 @@ public class HelloController implements Initializable {
     }
 
     /**
-     * Lógica de consulta de existencias por código.
+     * Busca existencias por código y selecciona la fila correspondiente en la tabla.
      */
     private void buscarProducto() {
         String codigo = txtBuscar.getText().trim();
@@ -199,6 +220,9 @@ public class HelloController implements Initializable {
         }
     }
 
+    /**
+     * Realiza una búsqueda lineal de un producto a partir de su código.
+     */
     private Producto buscarProductoPorCodigo(String codigo) {
         for (Producto p : listaProductos) {
             if (p.getCodigo().equalsIgnoreCase(codigo)) {
@@ -208,12 +232,18 @@ public class HelloController implements Initializable {
         return null;
     }
 
+    /**
+     * Restablece el formulario y el área de búsqueda.
+     */
     private void limpiarFormulario() {
         limpiarCamposFormulario();
         txtBuscar.clear();
         lblResultado.setText("Presione ENTER en el buscador para consultar existencias.");
     }
 
+    /**
+     * Vacía únicamente los campos de entrada del formulario.
+     */
     private void limpiarCamposFormulario() {
         txtCodigo.clear();
         txtNombre.clear();
@@ -222,6 +252,9 @@ public class HelloController implements Initializable {
         txtCodigo.requestFocus();
     }
 
+    /**
+     * Despliega una alerta modal en pantalla.
+     */
     private void mostrarAlerta(Alert.AlertType tipo, String titulo, String mensaje) {
         Alert alerta = new Alert(tipo);
         alerta.setTitle(titulo);
@@ -230,12 +263,20 @@ public class HelloController implements Initializable {
         alerta.showAndWait();
     }
 
-    private Runnable onVolverAlMenu;
-
+    /**
+     * Asigna el callback para retornar al Menú Integrador.
+     * 
+     * @param onVolverAlMenu Acción de retorno.
+     */
     public void setOnVolverAlMenu(Runnable onVolverAlMenu) {
         this.onVolverAlMenu = onVolverAlMenu;
     }
 
+    /**
+     * Maneja el clic en el botón "← Volver al Menú Principal".
+     * 
+     * @param event Evento de acción.
+     */
     @FXML
     private void volverAlMenu(ActionEvent event) {
         if (onVolverAlMenu != null) {

@@ -15,53 +15,49 @@ import org.uam.reto2.model.Producto;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * Controlador de la interfaz gráfica del Reto #3: Tienda de Artesanías Nicaragüenses.
+ * 
+ * Gestiona el menú superior multinivel (MenuBar), la barra de herramientas de acceso rápido (ToolBar),
+ * la búsqueda dinámica en el catálogo artesanal, el registro de ventas con decremento de stock,
+ * el cálculo de valorización del inventario y la navegación de retorno al Menú Integrador.
+ * 
+ * Sigue el principio de responsabilidad única (SRP), separando los despachadores de eventos FXML
+ * de la lógica de negocio y validaciones.
+ * 
+ * @author Equipo WAAS
+ */
 public class HelloController implements Initializable {
 
-    // Campos del formulario
-    @FXML
-    private TextField txtCodigo;
+    // --- Componentes FXML del Formulario de Artesanías ---
+    @FXML private TextField txtCodigo;
+    @FXML private TextField txtNombre;
+    @FXML private ComboBox<String> cbCategoria;
+    @FXML private TextField txtPrecio;
+    @FXML private TextField txtCantidad;
 
-    @FXML
-    private TextField txtNombre;
+    // --- Componentes FXML de Búsqueda y Barra de Estado ---
+    @FXML private TextField txtBuscar;
+    @FXML private Label lblEstado;
 
-    @FXML
-    private ComboBox<String> cbCategoria;
+    // --- Componentes FXML del Catálogo (TableView) ---
+    @FXML private TableView<Producto> tblProductos;
+    @FXML private TableColumn<Producto, String> colCodigo;
+    @FXML private TableColumn<Producto, String> colNombre;
+    @FXML private TableColumn<Producto, String> colCategoria;
+    @FXML private TableColumn<Producto, Double> colPrecio;
+    @FXML private TableColumn<Producto, Integer> colCantidad;
 
-    @FXML
-    private TextField txtPrecio;
-
-    @FXML
-    private TextField txtCantidad;
-
-    // Buscador y barra de estado
-    @FXML
-    private TextField txtBuscar;
-
-    @FXML
-    private Label lblEstado;
-
-    // Tabla y columnas
-    @FXML
-    private TableView<Producto> tblProductos;
-
-    @FXML
-    private TableColumn<Producto, String> colCodigo;
-
-    @FXML
-    private TableColumn<Producto, String> colNombre;
-
-    @FXML
-    private TableColumn<Producto, String> colCategoria;
-
-    @FXML
-    private TableColumn<Producto, Double> colPrecio;
-
-    @FXML
-    private TableColumn<Producto, Integer> colCantidad;
-
-    // Lista de productos en memoria
+    // Colección observable reactiva que almacena las artesanías en memoria
     private final ObservableList<Producto> listaProductos = FXCollections.observableArrayList();
 
+    // Callback suministrado por el Menú Integrador para navegación de retorno
+    private Runnable onVolverAlMenu;
+
+    /**
+     * Inicialización del controlador tras cargar la plantilla FXML.
+     * Carga el catálogo de categorías, enlaza las columnas de la tabla y puebla los datos iniciales.
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         configurarCategorias();
@@ -70,11 +66,18 @@ public class HelloController implements Initializable {
         actualizarEstado("Catálogo cargado con " + listaProductos.size() + " artesanías.");
     }
 
+    /**
+     * Configura las opciones del ComboBox de categorías con tipos tradicionales de artesanía.
+     */
     private void configurarCategorias() {
         cbCategoria.getItems().addAll("Textil", "Cerámica", "Madera", "Cuero", "Joyería", "Otro");
         cbCategoria.setValue("Textil");
     }
 
+    /**
+     * Enlaza reflexivamente las columnas de la tabla con las propiedades del modelo {@link Producto}
+     * y asocia un escuchador de selección para cargar la artesanía en el formulario.
+     */
     private void configurarTabla() {
         colCodigo.setCellValueFactory(new PropertyValueFactory<>("codigo"));
         colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
@@ -83,6 +86,7 @@ public class HelloController implements Initializable {
         colCantidad.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
         tblProductos.setItems(listaProductos);
 
+        // Al seleccionar una fila, se transfieren sus datos al formulario para edición
         tblProductos.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal != null) {
                 cargarEnFormulario(newVal);
@@ -90,6 +94,9 @@ public class HelloController implements Initializable {
         });
     }
 
+    /**
+     * Inserta piezas artesanales nicaragüenses representativas para la demostración inicial.
+     */
     private void cargarDatosIniciales() {
         listaProductos.add(new Producto("ART-001", "Hamaca Matrimonial Masaya", "Textil", 1250.00, 15));
         listaProductos.add(new Producto("ART-002", "Jarrón de Cerámica Negra", "Cerámica", 450.00, 20));
@@ -99,25 +106,36 @@ public class HelloController implements Initializable {
     }
 
     // =========================================================================
-    // MANEJADORES DE EVENTOS (Principio SOLID: Single Responsibility Principle)
-    // Los eventos de UI solo despachan la llamada al método con la lógica.
+    // MANEJADORES DE EVENTOS FXML
     // =========================================================================
 
+    /**
+     * Acción del menú/botón "Nuevo Producto" (Atajo: Ctrl+N).
+     */
     @FXML
     private void onNuevo(ActionEvent event) {
         prepararNuevoRegistro();
     }
 
+    /**
+     * Acción del menú/botón "Guardar" (Atajo: Ctrl+S).
+     */
     @FXML
     private void onGuardar(ActionEvent event) {
         guardarProducto();
     }
 
+    /**
+     * Acción del botón "Buscar" en la barra de herramientas.
+     */
     @FXML
     private void onBuscar(ActionEvent event) {
         buscarProducto();
     }
 
+    /**
+     * Evento de teclado en el cuadro de búsqueda; ejecuta al pulsar la tecla ENTER.
+     */
     @FXML
     private void onBuscarKeyPressed(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
@@ -125,40 +143,61 @@ public class HelloController implements Initializable {
         }
     }
 
+    /**
+     * Acción del menú/botón "Vender": descuenta una unidad del stock seleccionado.
+     */
     @FXML
     private void onVender(ActionEvent event) {
         venderProductoSeleccionado();
     }
 
+    /**
+     * Acción del menú "Resumen de Inventario": calcula totales y valorización económica.
+     */
     @FXML
     private void onResumenVentas(ActionEvent event) {
         mostrarResumenInventario();
     }
 
+    /**
+     * Acción del menú "Acerca de": presenta información institucional y académica.
+     */
     @FXML
     private void onAcercaDe(ActionEvent event) {
         mostrarInformacionAcercaDe();
     }
 
+    /**
+     * Acción del menú "Salir": finaliza la aplicación.
+     */
     @FXML
     private void onSalir(ActionEvent event) {
         cerrarAplicacion();
     }
 
+    /**
+     * Acción del botón "Limpiar": restablece campos y estado del formulario.
+     */
     @FXML
     private void onLimpiar(ActionEvent event) {
         limpiarFormulario();
     }
 
     // =========================================================================
-    // MÉTODOS DE LÓGICA DE NEGOCIO Y CONTROL (Responsabilidades separadas)
+    // MÉTODOS DE LÓGICA DE NEGOCIO
     // =========================================================================
 
+    /**
+     * Prepara el formulario para ingresar un nuevo registro en blanco.
+     */
     private void prepararNuevoRegistro() {
         limpiarCamposFormulario();
         actualizarEstado("Listo para ingresar una nueva artesanía.");
     }
 
+    /**
+     * Valida los campos ingresados y persiste la artesanía en la colección observable.
+     */
     private void guardarProducto() {
         String codigo = txtCodigo.getText().trim();
         String nombre = txtNombre.getText().trim();
@@ -166,7 +205,7 @@ public class HelloController implements Initializable {
         String precioStr = txtPrecio.getText().trim();
         String cantidadStr = txtCantidad.getText().trim();
 
-        // 1. Validar campos obligatorios
+        // 1. Validar que no existan campos vacíos
         if (!validarCamposObligatorios(codigo, nombre, precioStr, cantidadStr)) {
             mostrarAlerta(Alert.AlertType.WARNING, "Campos Vacíos", "Por favor complete todos los datos de la artesanía.");
             return;
@@ -180,15 +219,21 @@ public class HelloController implements Initializable {
             return;
         }
 
-        // 3. Registrar o actualizar
+        // 3. Registrar nuevo producto o actualizar existente
         registrarOActualizarProducto(codigo, nombre, categoria, precio, cantidad);
         limpiarCamposFormulario();
     }
 
+    /**
+     * Comprueba que todos los campos requeridos contengan texto.
+     */
     private boolean validarCamposObligatorios(String codigo, String nombre, String precio, String cantidad) {
         return !codigo.isEmpty() && !nombre.isEmpty() && !precio.isEmpty() && !cantidad.isEmpty();
     }
 
+    /**
+     * Convierte y valida que el precio sea mayor que cero.
+     */
     private Double parsearPrecio(String precioStr) {
         try {
             double precio = Double.parseDouble(precioStr);
@@ -203,6 +248,9 @@ public class HelloController implements Initializable {
         }
     }
 
+    /**
+     * Convierte y valida que la cantidad en existencia sea un entero no negativo.
+     */
     private Integer parsearCantidad(String cantidadStr) {
         try {
             int cantidad = Integer.parseInt(cantidadStr);
@@ -217,6 +265,9 @@ public class HelloController implements Initializable {
         }
     }
 
+    /**
+     * Inserta una nueva artesanía en el catálogo o actualiza los datos si el código ya existe.
+     */
     private void registrarOActualizarProducto(String codigo, String nombre, String categoria, double precio, int cantidad) {
         Producto existente = buscarProductoPorCodigo(codigo);
 
@@ -237,6 +288,9 @@ public class HelloController implements Initializable {
         }
     }
 
+    /**
+     * Busca coincidencias parciales por código o nombre y resalta el producto en la tabla.
+     */
     private void buscarProducto() {
         String criterio = txtBuscar.getText().trim().toLowerCase();
 
@@ -258,6 +312,9 @@ public class HelloController implements Initializable {
         actualizarEstado("No se encontró ninguna artesanía que coincida con: " + criterio);
     }
 
+    /**
+     * Registra una venta reduciendo en 1 el stock del producto seleccionado en la tabla.
+     */
     private void venderProductoSeleccionado() {
         Producto seleccionado = tblProductos.getSelectionModel().getSelectedItem();
         if (seleccionado == null) {
@@ -276,6 +333,9 @@ public class HelloController implements Initializable {
         actualizarEstado("Venta realizada: 1 unidad de " + seleccionado.getNombre() + " (Quedan: " + seleccionado.getCantidad() + ")");
     }
 
+    /**
+     * Computa y presenta un resumen estadístico de las existencias y valor total del inventario.
+     */
     private void mostrarResumenInventario() {
         int totalUnidades = 0;
         double valorTotal = 0;
@@ -291,20 +351,32 @@ public class HelloController implements Initializable {
         mostrarAlerta(Alert.AlertType.INFORMATION, "Resumen de Inventario", mensaje);
     }
 
+    /**
+     * Muestra el cuadro informativo sobre la autoría y propósito del Reto 3.
+     */
     private void mostrarInformacionAcercaDe() {
         mostrarAlerta(Alert.AlertType.INFORMATION, "Acerca de la Tienda",
                 "Tienda de Artesanías Nicaragüenses\nReto #3 - Menús, ToolBar, Eventos y Navegación\nDesarrollado para Programación de Escritorio - UAM");
     }
 
+    /**
+     * Cierra la aplicación completa.
+     */
     private void cerrarAplicacion() {
         Platform.exit();
     }
 
+    /**
+     * Restablece los campos de captura y la barra de estado.
+     */
     private void limpiarFormulario() {
         limpiarCamposFormulario();
         actualizarEstado("Formulario limpio.");
     }
 
+    /**
+     * Búsqueda por coincidencia exacta de código.
+     */
     private Producto buscarProductoPorCodigo(String codigo) {
         for (Producto p : listaProductos) {
             if (p.getCodigo().equalsIgnoreCase(codigo)) {
@@ -314,6 +386,9 @@ public class HelloController implements Initializable {
         return null;
     }
 
+    /**
+     * Traslada los valores de un producto hacia los controles del formulario.
+     */
     private void cargarEnFormulario(Producto p) {
         txtCodigo.setText(p.getCodigo());
         txtNombre.setText(p.getNombre());
@@ -322,6 +397,9 @@ public class HelloController implements Initializable {
         txtCantidad.setText(String.valueOf(p.getCantidad()));
     }
 
+    /**
+     * Vacía las cajas de texto y reinicia la categoría a su valor predeterminado.
+     */
     private void limpiarCamposFormulario() {
         txtCodigo.clear();
         txtNombre.clear();
@@ -331,10 +409,16 @@ public class HelloController implements Initializable {
         txtCodigo.requestFocus();
     }
 
+    /**
+     * Actualiza el texto de la etiqueta de la barra de estado inferior.
+     */
     private void actualizarEstado(String mensaje) {
         lblEstado.setText(mensaje);
     }
 
+    /**
+     * Despliega un cuadro de diálogo modal en la interfaz.
+     */
     private void mostrarAlerta(Alert.AlertType tipo, String titulo, String mensaje) {
         Alert alerta = new Alert(tipo);
         alerta.setTitle(titulo);
@@ -343,12 +427,16 @@ public class HelloController implements Initializable {
         alerta.showAndWait();
     }
 
-    private Runnable onVolverAlMenu;
-
+    /**
+     * Establece el callback para regresar al Menú Integrador.
+     */
     public void setOnVolverAlMenu(Runnable onVolverAlMenu) {
         this.onVolverAlMenu = onVolverAlMenu;
     }
 
+    /**
+     * Maneja el clic en "Volver al Menú Principal" para cerrar el Reto 3 y restaurar el menú.
+     */
     @FXML
     private void volverAlMenu(ActionEvent event) {
         if (onVolverAlMenu != null) {
