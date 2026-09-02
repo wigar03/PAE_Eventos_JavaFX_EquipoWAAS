@@ -7,20 +7,16 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
-<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="580.0" prefWidth="900.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.uam.reto1.HelloController">
+<BorderPane prefHeight="550.0" prefWidth="860.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.uam.reto1.HelloController">
     
-    <!-- Encabezado Superior -->
+    <!-- Encabezado -->
     <top>
         <VBox styleClass="header-container" BorderPane.alignment="CENTER">
             <Label styleClass="header-title" text="Inventario de Pulpería" />
-            <Label styleClass="header-subtitle" text="Reto #1 - Registro de productos y consulta rápida con eventos JavaFX" />
+            <Label styleClass="header-subtitle" text="Reto #1 - Registro y consulta de productos con eventos JavaFX" />
         </VBox>
     </top>
 
@@ -32,69 +28,47 @@
             </padding>
             
             <!-- Panel Izquierdo: Formulario de Registro -->
-            <VBox prefWidth="340.0" spacing="14.0" styleClass="card-panel">
+            <VBox prefWidth="300.0" spacing="12.0" styleClass="card-panel">
                 <Label styleClass="section-title" text="Registro de Producto" />
                 
-                <GridPane hgap="8.0" vgap="10.0">
-                    <columnConstraints>
-                        <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
-                    </columnConstraints>
-                    
-                    <VBox spacing="4.0" GridPane.rowIndex="0">
-                        <Label styleClass="field-label" text="Código del Producto:" />
-                        <TextField fx:id="txtCodigo" promptText="Ej. P001" />
-                    </VBox>
-                    
-                    <VBox spacing="4.0" GridPane.rowIndex="1">
-                        <Label styleClass="field-label" text="Nombre / Descripción:" />
-                        <TextField fx:id="txtNombre" promptText="Ej. Arroz Faisán 1lb" />
-                    </VBox>
-                    
-                    <VBox spacing="4.0" GridPane.rowIndex="2">
-                        <Label styleClass="field-label" text="Precio Unitario (C$):" />
-                        <TextField fx:id="txtPrecio" promptText="Ej. 18.50" />
-                    </VBox>
-                    
-                    <VBox spacing="4.0" GridPane.rowIndex="3">
-                        <Label styleClass="field-label" text="Cantidad / Existencias:" />
-                        <TextField fx:id="txtCantidad" promptText="Ej. 25" />
-                    </VBox>
-               <rowConstraints>
-                  <RowConstraints />
-                  <RowConstraints />
-                  <RowConstraints />
-                  <RowConstraints />
-               </rowConstraints>
-                </GridPane>
+                <VBox spacing="4.0">
+                    <Label styleClass="field-label" text="Código del Producto:" />
+                    <TextField fx:id="txtCodigo" promptText="Ej. P001" />
+                </VBox>
+                
+                <VBox spacing="4.0">
+                    <Label styleClass="field-label" text="Nombre / Descripción:" />
+                    <TextField fx:id="txtNombre" promptText="Ej. Arroz Faisán 1lb" />
+                </VBox>
+                
+                <VBox spacing="4.0">
+                    <Label styleClass="field-label" text="Precio Unitario (C$):" />
+                    <TextField fx:id="txtPrecio" promptText="Ej. 18.50" />
+                </VBox>
+                
+                <VBox spacing="4.0">
+                    <Label styleClass="field-label" text="Cantidad / Existencias:" />
+                    <TextField fx:id="txtCantidad" promptText="Ej. 25" />
+                </VBox>
 
                 <!-- Botones de Acción (ActionEvent) -->
                 <HBox spacing="10.0">
-                    <Button fx:id="btnGuardar" maxWidth="Infinity" onAction="#onGuardar" styleClass="btn-primary" text="💾 Guardar Producto" HBox.hgrow="ALWAYS" />
-                    <Button fx:id="btnLimpiar" onAction="#onLimpiar" styleClass="btn-secondary" text="🧹 Limpiar" />
+                    <Button fx:id="btnGuardar" maxWidth="Infinity" onAction="#onGuardar" styleClass="btn-primary" text="💾 Guardar" HBox.hgrow="ALWAYS" />
+                    <Button fx:id="btnLimpiar" onAction="#onLimpiar" styleClass="btn-secondary" text="Limpiar" />
                 </HBox>
-
-                <!-- Mensaje de Estado / Notificación -->
-                <Label fx:id="lblMensaje" wrapText="true" />
             </VBox>
 
-            <!-- Panel Derecho: Búsqueda Rápida y Tabla de Inventario -->
+            <!-- Panel Derecho: Búsqueda con KeyEvent y Tabla -->
             <VBox spacing="12.0" styleClass="card-panel" HBox.hgrow="ALWAYS">
+                <Label styleClass="section-title" text="Consulta Rápida de Existencias" />
                 
-                <!-- Barra de Búsqueda con KeyEvent (ENTER) -->
-                <VBox spacing="6.0">
-                    <Label styleClass="section-title" text="Consulta Rápida de Existencias" />
-                    <HBox alignment="CENTER_LEFT" spacing="10.0">
-                        <TextField fx:id="txtBuscar" onKeyPressed="#onBuscarKeyPressed" promptText="🔍 Escriba el código y presione ENTER para buscar..." styleClass="search-field" HBox.hgrow="ALWAYS" />
-                        <Button onAction="#onBuscarClick" styleClass="btn-secondary" text="Buscar" />
-                    </HBox>
-                </VBox>
+                <!-- Búsqueda con KeyEvent (ENTER) -->
+                <TextField fx:id="txtBuscar" onKeyPressed="#onBuscar" promptText="🔍 Ingrese el código y presione ENTER para buscar existencias..." />
+                
+                <!-- Mensaje de Resultado -->
+                <Label fx:id="lblResultado" styleClass="lbl-resultado" text="Presione ENTER en el buscador para consultar existencias." wrapText="true" />
 
-                <!-- Tarjeta de Resultado de Búsqueda -->
-                <HBox fx:id="panelResultadoBusqueda" alignment="CENTER_LEFT" spacing="10.0" styleClass="search-pill" visible="false">
-                    <Label fx:id="lblResultadoBusqueda" text="Producto encontrado" />
-                </HBox>
-
-                <!-- Tabla de Productos Registrados -->
+                <!-- Tabla de Productos -->
                 <TableView fx:id="tblProductos" VBox.vgrow="ALWAYS">
                     <columns>
                         <TableColumn fx:id="colCodigo" prefWidth="90.0" text="Código" />
@@ -106,11 +80,6 @@
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                     </columnResizePolicy>
                 </TableView>
-
-                <!-- Pie de tabla / Contador -->
-                <HBox alignment="CENTER_RIGHT" spacing="10.0">
-                    <Label fx:id="lblTotalProductos" styleClass="field-label" text="Total de productos: 0" />
-                </HBox>
             </VBox>
         </HBox>
     </center>
