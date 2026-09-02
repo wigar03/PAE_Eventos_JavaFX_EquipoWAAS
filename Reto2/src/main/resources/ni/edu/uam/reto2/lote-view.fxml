@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="TOP_CENTER" prefHeight="650.0" prefWidth="800.0" spacing="15.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ni.edu.uam.reto2.controllers.LoteController">
+    <padding>
+        <Insets bottom="30.0" left="40.0" right="40.0" top="20.0" />
+    </padding>
+
+    <HBox alignment="CENTER_LEFT" spacing="16.0">
+        <Button onAction="#volverAlMenu" text="← Volver al Menú Principal" style="-fx-background-color: #21262d; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 6 14; -fx-background-radius: 6; -fx-cursor: hand; -fx-border-color: #484f58; -fx-border-radius: 6;" />
+        <Region HBox.hgrow="ALWAYS" />
+    </HBox>
+
+    <Label text="Registro de Lotes - Cooperativa" textFill="DARKGOLDENROD">
+        <font>
+            <Font name="System Bold" size="24.0" />
+        </font>
+        <VBox.margin>
+            <Insets bottom="10.0" />
+        </VBox.margin>
+    </Label>
+
+    <HBox spacing="20.0">
+        <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+            <Label text="Código de Lote" textFill="DARKGOLDENROD" />
+            <TextField fx:id="txtIdLote" promptText="Ej. L-001" />
+        </VBox>
+
+        <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+            <Label text="Producto" textFill="DARKGOLDENROD" />
+            <TextField fx:id="txtNombreProducto" promptText="Nombre del producto" />
+        </VBox>
+
+        <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+            <Label text="Cantidad (Kilos)" textFill="DARKGOLDENROD" />
+            <TextField fx:id="txtCantidadKilos" promptText="Ej. 150.5" />
+        </VBox>
+    </HBox>
+
+    <HBox spacing="20.0">
+        <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+            <Label text="Tipo de Grano" textFill="DARKGOLDENROD" />
+            <ComboBox fx:id="cbTipoGrano" maxWidth="Infinity" promptText="Seleccione un tipo" />
+        </VBox>
+
+        <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+            <Label text="Fecha de Entrega" textFill="DARKGOLDENROD" />
+            <DatePicker fx:id="dpFechaEntrega" maxWidth="Infinity" />
+        </VBox>
+
+        <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+            <Label text="Fecha de Caducidad" textFill="DARKGOLDENROD" />
+            <DatePicker fx:id="dpFechaCaducidad" maxWidth="Infinity" />
+        </VBox>
+    </HBox>
+
+    <HBox alignment="CENTER" spacing="20.0">
+        <VBox.margin>
+            <Insets bottom="10.0" top="10.0" />
+        </VBox.margin>
+
+        <Button onAction="#agregarOnClick" prefWidth="100.0" style="-fx-background-color: DARKGOLDENROD; -fx-text-fill: white;" text="Agregar" />
+        <Button onAction="#limpiarOnClick" prefWidth="100.0" style="-fx-background-color: GRAY; -fx-text-fill: white;" text="Limpiar" />
+    </HBox>
+
+    <TableView fx:id="tvLotes" onMouseClicked="#onTablaMouseClicked" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="colId" prefWidth="90.0" text="Código" />
+            <TableColumn fx:id="colProducto" prefWidth="140.0" text="Producto" />
+            <TableColumn fx:id="colCantidad" prefWidth="90.0" text="Kilos" />
+            <TableColumn fx:id="colGrano" prefWidth="120.0" text="Tipo Grano" />
+            <TableColumn fx:id="colFechaEntrega" prefWidth="120.0" text="Entrega" />
+            <TableColumn fx:id="colFechaCaducidad" prefWidth="120.0" text="Caducidad" />
+        </columns>
+    </TableView>
+</VBox>

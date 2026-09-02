@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>ni.edu.uam</groupId>
+    <artifactId>GuiaPractica-Eventos</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>GuiaPractica-Eventos</name>
+
+    <modules>
+        <module>Reto #1/Reto1</module>
+        <module>Reto2</module>
+        <module>Reto #3/Reto3</module>
+        <module>MenuIntegrador</module>
+    </modules>
+</project>
