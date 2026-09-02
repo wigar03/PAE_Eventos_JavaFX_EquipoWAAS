@@ -7,8 +7,9 @@
  * @author Equipo WAAS
  */
 module org.uam.reto1 {
-    // Módulos esenciales de JavaFX para interfaz gráfica y vinculación FXML
-    requires javafx.controls;
+    // Módulos esenciales de JavaFX con exportación transitiva para clientes de la API gráfica
+    requires transitive javafx.controls;
+    requires transitive javafx.graphics;
     requires javafx.fxml;
 
     // Apertura de paquetes para reflexión en tiempo de ejecución (PropertyValueFactory y FXMLLoader)

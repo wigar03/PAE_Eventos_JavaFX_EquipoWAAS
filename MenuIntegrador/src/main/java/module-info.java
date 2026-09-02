@@ -1,5 +1,6 @@
 module ni.edu.uam.menu {
-    requires javafx.controls;
+    requires transitive javafx.controls;
+    requires transitive javafx.graphics;
     requires javafx.fxml;
 
     requires org.uam.reto1;

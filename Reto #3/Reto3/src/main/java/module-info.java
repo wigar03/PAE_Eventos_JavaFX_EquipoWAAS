@@ -7,8 +7,9 @@
  * @author Equipo WAAS
  */
 module org.uam.reto2 {
-    // Dependencias fundamentales de JavaFX para componentes gráficos y FXML
-    requires javafx.controls;
+    // Dependencias fundamentales de JavaFX con visibilidad transitiva de la API gráfica
+    requires transitive javafx.controls;
+    requires transitive javafx.graphics;
     requires javafx.fxml;
 
     // Apertura reflexiva de paquetes para FXMLLoader y PropertyValueFactory
