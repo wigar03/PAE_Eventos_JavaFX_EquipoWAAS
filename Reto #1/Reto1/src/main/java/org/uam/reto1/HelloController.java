@@ -229,4 +229,20 @@ public class HelloController implements Initializable {
         alerta.setContentText(mensaje);
         alerta.showAndWait();
     }
+
+    private Runnable onVolverAlMenu;
+
+    public void setOnVolverAlMenu(Runnable onVolverAlMenu) {
+        this.onVolverAlMenu = onVolverAlMenu;
+    }
+
+    @FXML
+    private void volverAlMenu(ActionEvent event) {
+        if (onVolverAlMenu != null) {
+            onVolverAlMenu.run();
+        } else {
+            javafx.stage.Stage stage = (javafx.stage.Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+            stage.close();
+        }
+    }
 }

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.Group?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.SVGPath?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.transform.Scale?>
+<?import javafx.scene.transform.Translate?>
+
+<BorderPane prefHeight="650.0" prefWidth="980.0" style="-fx-background-color: #f8fafc;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ni.edu.uam.menu.MenuController">
+
+    <!-- Encabezado del Portal con Logo Vectorial UAM Compacto (Blanco y #0099AB) -->
+    <top>
+        <VBox spacing="6.0" style="-fx-background-color: #ffffff; -fx-padding: 14 30; -fx-border-color: #e2e8f0; -fx-border-width: 0 0 1 0;">
+            <!-- Fila 1: Logo + Título Principal y Etiquetas a la derecha -->
+            <HBox alignment="CENTER_LEFT" spacing="14.0">
+                <!-- Contenedor ajustado al tamaño exacto del Logo UAM -->
+                <Pane maxHeight="32.0" maxWidth="90.0" minHeight="32.0" minWidth="90.0" prefHeight="32.0" prefWidth="90.0">
+                    <Group>
+                        <transforms>
+                            <Scale pivotX="0.0" pivotY="0.0" x="0.225" y="0.225" />
+                            <Scale pivotX="0.0" pivotY="0.0" x="0.31055793" y="0.31055793" />
+                            <Translate x="-32.298025" y="-30.772409" />
+                        </transforms>
+                        <!-- Trazo 1 del Logo UAM -->
+                        <SVGPath content="m 872.8,99.1 c 14.2,-0.1 25.2,0.4 33.5,1.5 6.7,0.8 16.9,2.6 22.7,3.9 5.8,1.3 15.7,4 22,6.1 6.3,2 15.8,5.5 21,7.7 5.2,2.1 13.3,5.8 18,8.2 4.7,2.3 12.6,6.6 17.5,9.5 5,2.9 12.4,7.6 16.5,10.3 4.1,2.8 12,8.4 17.5,12.5 5.5,4.2 15.6,12.3 22.5,18.1 6.8,5.8 19,16.9 41.5,38.8 l 13.8,-11.6 c 7.6,-6.4 20.9,-16.6 29.5,-22.8 8.6,-6.2 22.2,-15.2 30.2,-20 8,-4.8 21.3,-12.2 29.5,-16.3 8.3,-4.2 20.6,-10 27.5,-12.9 6.9,-2.9 19.5,-7.7 28,-10.6 8.5,-2.9 21.8,-6.8 29.5,-8.8 7.7,-2 20.1,-4.7 27.5,-6.1 7.4,-1.4 19.6,-3.2 27,-4 7.4,-0.8 20.4,-1.9 44,-3.1 V 548 h -67 V 173.5 l -7.7,0.7 c -4.3,0.4 -13.2,2.1 -19.8,3.8 -6.6,1.7 -18.3,5.6 -26,8.7 -7.7,3 -19.2,8.1 -25.5,11.3 -6.3,3.2 -17.1,9 -24,13 -6.9,4 -18.3,11.1 -25.5,15.8 -7.2,4.7 -20,13.9 -28.5,20.3 -8.5,6.4 -21.3,16.8 -28.5,23.1 -7.2,6.3 -17.6,16.4 -33.5,33.3 l -4.2,-5 c -2.3,-2.7 -8.3,-9.2 -13.3,-14.3 -4.9,-5.2 -13.4,-13.3 -18.9,-18 -5.4,-4.8 -13.9,-12 -19,-16 -5,-4 -14,-10.8 -20.1,-15.1 -6,-4.3 -16.8,-11.5 -24,-16 -7.1,-4.5 -21.8,-12.6 -32.5,-17.9 -10.7,-5.4 -25.2,-11.9 -32.2,-14.5 -7.1,-2.6 -17.2,-5.8 -22.5,-7.2 -5.4,-1.4 -13.8,-3.2 -18.8,-4 -4.9,-0.8 -11.6,-1.5 -20.5,-1.5 v 373 h -65 l 0.5,-103 H 516 l -0.9,2.3 c -0.5,1.2 -2,7.4 -3.5,13.7 -1.4,6.3 -3.2,15.6 -4.1,20.5 -0.8,4.9 -1.9,13.1 -2.5,18 -0.6,4.9 -1.4,17.9 -2.5,48.5 H 435 v -11.7 c 0,-6.5 0.7,-18.8 1.5,-27.3 0.8,-8.5 2.4,-21 3.5,-27.7 1.1,-6.8 3.1,-17.6 4.5,-24 1.4,-6.5 4.1,-17.4 6,-24.3 1.9,-6.9 5.5,-18.6 8,-26 2.6,-7.4 6.9,-19.1 9.7,-26 2.8,-6.9 8.6,-19.7 12.8,-28.5 4.3,-8.8 11.1,-21.6 15,-28.5 4,-6.9 10.6,-17.7 14.7,-24 4.2,-6.3 11.4,-16.7 16.1,-23 4.7,-6.3 11.7,-15.3 15.6,-20 3.9,-4.7 11.8,-13.6 17.6,-19.9 5.8,-6.3 15.9,-16.4 22.5,-22.5 6.6,-6.1 16.5,-14.7 22,-19.2 5.5,-4.5 15.9,-12.3 23,-17.4 7.2,-5 19.1,-12.8 26.5,-17.3 7.4,-4.4 20.5,-11.5 29,-15.8 8.5,-4.3 21.6,-10.2 29,-13.2 7.4,-3 19.1,-7.4 26,-9.7 6.9,-2.3 19.3,-5.9 27.5,-8 8.3,-2.2 20.9,-5 28,-6.4 7.2,-1.3 18.9,-3.2 26,-4.1 7.2,-0.9 17.3,-2 22.5,-2.4 5.2,-0.5 19.1,-0.9 30.8,-1 z M 811,173.8 c -1.9,0.2 -10.1,1.6 -18.2,3.3 -8.2,1.6 -22.1,5.3 -31,8.3 -9,2.9 -22.6,8.1 -30.3,11.5 -7.7,3.5 -20.1,9.6 -27.5,13.8 -7.4,4.1 -19.3,11.3 -26.5,16 -7.1,4.7 -17.5,12 -23,16.2 -5.5,4.1 -14.7,11.6 -20.5,16.6 -5.8,4.9 -15.2,13.5 -21,19.1 -5.8,5.6 -15.7,16.1 -22,23.4 -6.3,7.3 -15.3,18.3 -20,24.5 -4.7,6.3 -11.4,16 -15,21.7 -3.5,5.7 -9.5,16.4 -13.3,23.8 l -7,13.5 c 215.9,0.4 278.7,0.4 278.9,0.3 0.2,-0.2 0.2,-48 0.1,-106.3 l -0.2,-106 z" fill="#0099AB" />
+                        <!-- Trazo 2 del Logo UAM -->
+                        <SVGPath content="m 104,100 h 75 l 0.5,329.5 2.3,7 c 1.3,3.9 3.8,9.5 5.5,12.5 1.8,3 5.7,8.1 8.7,11.4 3,3.2 8.2,7.8 11.5,10.1 3.3,2.4 8.4,5.4 11.3,6.9 2.8,1.4 9.1,3.9 13.9,5.6 4.9,1.6 13.1,3.6 18.3,4.4 5.2,0.9 14.4,1.6 20.5,1.6 6.1,0 15.3,-0.7 20.5,-1.5 5.2,-0.9 13.8,-3 19,-4.8 5.2,-1.8 13,-5.2 17.4,-7.7 4.3,-2.5 10.6,-7 14,-10.1 3.3,-3.1 8,-8.5 10.3,-12 2.4,-3.5 5.5,-9.8 9.8,-21.4 l 0.6,-111 c 0.4,-61.1 0.7,-135.6 0.9,-220.5 h 73.9 l -0.4,335.5 -2.7,10 c -1.5,5.5 -4.1,13.4 -5.8,17.5 -1.7,4.1 -4.6,10.2 -6.4,13.5 -1.9,3.3 -6.1,9.6 -9.3,14 -3.3,4.4 -10.4,12.3 -15.9,17.5 -5.5,5.2 -14.2,12.4 -19.4,15.8 -5.2,3.5 -14.4,8.8 -20.5,11.7 -6.1,3 -16.4,7.2 -23,9.4 -6.6,2.1 -16.7,4.8 -22.5,6 -5.8,1.1 -14.6,2.6 -19.5,3.2 -5.5,0.7 -16.3,0.9 -28,0.6 -14.1,-0.4 -21.6,-1.1 -29,-2.7 -5.5,-1.1 -15.4,-3.9 -22,-6.1 -6.6,-2.2 -16.5,-6.2 -22,-8.9 -5.5,-2.7 -14.3,-7.7 -19.5,-11.1 -5.2,-3.4 -12.7,-8.7 -16.5,-11.9 -3.9,-3.1 -10.8,-9.7 -15.5,-14.7 -4.7,-4.9 -10.8,-12.3 -13.6,-16.4 -2.9,-4.1 -7.2,-11.5 -9.7,-16.4 -2.5,-4.9 -5.5,-11.8 -6.6,-15.3 -1.2,-3.4 -2.9,-9.2 -3.8,-13 -1.6,-6.1 -1.7,-20.5 -2,-172.5 z" fill="#0099AB" />
+                    </Group>
+                </Pane>
+
+                <Separator orientation="VERTICAL" style="-fx-opacity: 0.5;" />
+
+                <Label style="-fx-text-fill: #0f172a; -fx-font-size: 20px; -fx-font-weight: bold;" text="Portal Integrador de Retos JavaFX" />
+
+                <Region HBox.hgrow="ALWAYS" />
+
+                <!-- Insignias a la derecha -->
+                <HBox alignment="CENTER_RIGHT" spacing="10.0">
+                    <Label style="-fx-background-color: rgba(0, 153, 171, 0.12); -fx-text-fill: #0099AB; -fx-font-size: 11px; -fx-font-weight: bold; -fx-padding: 3 10; -fx-background-radius: 12; -fx-border-color: rgba(0, 153, 171, 0.3); -fx-border-radius: 12;" text="P.A.E - PRÁCTICA INTEGRADORA" />
+                    <Label fx:id="lblVersionJava" style="-fx-text-fill: #0099AB; -fx-font-size: 11px; -fx-font-weight: bold;" text="Java: --" />
+                </HBox>
+            </HBox>
+
+            <!-- Fila 2: Subtítulo completo visible sin necesidad de pantalla completa -->
+            <Label style="-fx-text-fill: #64748b; -fx-font-size: 12px;" text="Manejo de eventos, arquitectura modular, patrones DAO/CRUD, navegación y menús avanzados • Equipo WAAS" wrapText="true" />
+        </VBox>
+    </top>
+
+    <!-- Centro: Tarjetas de los 3 Retos -->
+    <center>
+        <ScrollPane fitToHeight="true" fitToWidth="true" style="-fx-background-color: transparent; -fx-background: transparent; -fx-border-color: transparent;">
+            <HBox alignment="CENTER" fillHeight="true" spacing="24.0" style="-fx-padding: 30 36;">
+
+                <!-- Tarjeta Reto #1 -->
+                <VBox fx:id="cardReto1" prefWidth="280.0" spacing="14.0" style="-fx-background-color: #ffffff; -fx-border-color: #e2e8f0; -fx-border-width: 1.5; -fx-border-radius: 12; -fx-background-radius: 12; -fx-padding: 24; -fx-effect: dropshadow(three-pass-box, rgba(0, 153, 171, 0.08), 12, 0, 0, 4);" HBox.hgrow="ALWAYS">
+                    <HBox alignment="CENTER_LEFT">
+                        <Label style="-fx-background-color: rgba(0, 153, 171, 0.12); -fx-text-fill: #0099AB; -fx-font-size: 11px; -fx-font-weight: bold; -fx-padding: 3 10; -fx-background-radius: 6;" text="RETO #1" />
+                    </HBox>
+                    <Label style="-fx-text-fill: #0f172a; -fx-font-size: 18px; -fx-font-weight: bold;" text="Inventario de Pulpería" />
+                    <Label style="-fx-text-fill: #64748b; -fx-font-size: 13px;" text="Gestión de catálogo comercial con filtros reactivos por código, descripción y categoría. Eventos de teclado y selección rápida en tabla." wrapText="true" VBox.vgrow="ALWAYS" />
+                    <HBox spacing="6.0">
+                        <Label style="-fx-background-color: #f1f5f9; -fx-text-fill: #475569; -fx-font-size: 11px; -fx-padding: 3 8; -fx-background-radius: 4;" text="Filtros Dinámicos" />
+                        <Label style="-fx-background-color: #f1f5f9; -fx-text-fill: #475569; -fx-font-size: 11px; -fx-padding: 3 8; -fx-background-radius: 4;" text="TableView" />
+                    </HBox>
+                    <Separator style="-fx-opacity: 0.4;" />
+                    <Button fx:id="btnReto1" maxWidth="Infinity" onAction="#abrirReto1" style="-fx-background-color: #0099AB; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 13px; -fx-padding: 10 18; -fx-background-radius: 8; -fx-cursor: hand;" text="Abrir Reto #1  ➜" />
+                </VBox>
+
+                <!-- Tarjeta Reto #2 -->
+                <VBox fx:id="cardReto2" prefWidth="280.0" spacing="14.0" style="-fx-background-color: #ffffff; -fx-border-color: #e2e8f0; -fx-border-width: 1.5; -fx-border-radius: 12; -fx-background-radius: 12; -fx-padding: 24; -fx-effect: dropshadow(three-pass-box, rgba(0, 153, 171, 0.08), 12, 0, 0, 4);" HBox.hgrow="ALWAYS">
+                    <HBox alignment="CENTER_LEFT">
+                        <Label style="-fx-background-color: rgba(0, 153, 171, 0.12); -fx-text-fill: #0099AB; -fx-font-size: 11px; -fx-font-weight: bold; -fx-padding: 3 10; -fx-background-radius: 6;" text="RETO #2" />
+                    </HBox>
+                    <Label style="-fx-text-fill: #0f172a; -fx-font-size: 18px; -fx-font-weight: bold;" text="Cooperativa de Granos" />
+                    <Label style="-fx-text-fill: #64748b; -fx-font-size: 13px;" text="Sistema de control de lotes agrícolas utilizando el patrón de diseño DAO y la interfaz genérica CRUD. Soporta menú contextual y fechas." wrapText="true" VBox.vgrow="ALWAYS" />
+                    <HBox spacing="6.0">
+                        <Label style="-fx-background-color: #f1f5f9; -fx-text-fill: #475569; -fx-font-size: 11px; -fx-padding: 3 8; -fx-background-radius: 4;" text="Patrón DAO" />
+                        <Label style="-fx-background-color: #f1f5f9; -fx-text-fill: #475569; -fx-font-size: 11px; -fx-padding: 3 8; -fx-background-radius: 4;" text="CRUD" />
+                        <Label style="-fx-background-color: #f1f5f9; -fx-text-fill: #475569; -fx-font-size: 11px; -fx-padding: 3 8; -fx-background-radius: 4;" text="ContextMenu" />
+                    </HBox>
+                    <Separator style="-fx-opacity: 0.4;" />
+                    <Button fx:id="btnReto2" maxWidth="Infinity" onAction="#abrirReto2" style="-fx-background-color: #0099AB; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 13px; -fx-padding: 10 18; -fx-background-radius: 8; -fx-cursor: hand;" text="Abrir Reto #2  ➜" />
+                </VBox>
+
+                <!-- Tarjeta Reto #3 -->
+                <VBox fx:id="cardReto3" prefWidth="280.0" spacing="14.0" style="-fx-background-color: #ffffff; -fx-border-color: #e2e8f0; -fx-border-width: 1.5; -fx-border-radius: 12; -fx-background-radius: 12; -fx-padding: 24; -fx-effect: dropshadow(three-pass-box, rgba(0, 153, 171, 0.08), 12, 0, 0, 4);" HBox.hgrow="ALWAYS">
+                    <HBox alignment="CENTER_LEFT">
+                        <Label style="-fx-background-color: rgba(0, 153, 171, 0.12); -fx-text-fill: #0099AB; -fx-font-size: 11px; -fx-font-weight: bold; -fx-padding: 3 10; -fx-background-radius: 6;" text="RETO #3" />
+                    </HBox>
+                    <Label style="-fx-text-fill: #0f172a; -fx-font-size: 18px; -fx-font-weight: bold;" text="Tienda de Artesanías" />
+                    <Label style="-fx-text-fill: #64748b; -fx-font-size: 13px;" text="Aplicación con interfaz rica compuesta por barra de menús multinivel (MenuBar), barra de herramientas (ToolBar) y atajos de teclado." wrapText="true" VBox.vgrow="ALWAYS" />
+                    <HBox spacing="6.0">
+                        <Label style="-fx-background-color: #f1f5f9; -fx-text-fill: #475569; -fx-font-size: 11px; -fx-padding: 3 8; -fx-background-radius: 4;" text="MenuBar" />
+                        <Label style="-fx-background-color: #f1f5f9; -fx-text-fill: #475569; -fx-font-size: 11px; -fx-padding: 3 8; -fx-background-radius: 4;" text="ToolBar" />
+                    </HBox>
+                    <Separator style="-fx-opacity: 0.4;" />
+                    <Button fx:id="btnReto3" maxWidth="Infinity" onAction="#abrirReto3" style="-fx-background-color: #0099AB; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 13px; -fx-padding: 10 18; -fx-background-radius: 8; -fx-cursor: hand;" text="Abrir Reto #3  ➜" />
+                </VBox>
+
+            </HBox>
+        </ScrollPane>
+    </center>
+
+    <!-- Barra Inferior (Limpia sin texto a la izquierda) -->
+    <bottom>
+        <HBox alignment="CENTER_RIGHT" spacing="20.0" style="-fx-background-color: #ffffff; -fx-padding: 14 36; -fx-border-color: #e2e8f0; -fx-border-width: 1 0 0 0;">
+            <Button onAction="#salirDeLaAplicacion" style="-fx-background-color: #fef2f2; -fx-text-fill: #dc2626; -fx-border-color: #fecaca; -fx-border-radius: 6; -fx-background-radius: 6; -fx-font-weight: bold; -fx-font-size: 12px; -fx-padding: 7 16; -fx-cursor: hand;" text="Salir del Portal" />
+        </HBox>
+    </bottom>
+
+</BorderPane>
