@@ -5,9 +5,9 @@ import ni.edu.uam.reto2.models.Lote;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LoteDAO implements CRUD<Lote>{
+public class LoteDAO implements CRUD<Lote> {
 
-    List<Lote> lotes;
+    private final List<Lote> lotes;
 
     public LoteDAO() {
         lotes = new ArrayList<>();
@@ -20,12 +20,17 @@ public class LoteDAO implements CRUD<Lote>{
 
     @Override
     public void editar(Lote lote) {
-        lotes.set(lotes.indexOf(lote), lote);
+        int index = lotes.indexOf(lote);
+        if (index != -1) {
+            lotes.set(index, lote);
+        }
     }
 
     @Override
     public void eliminar(int index) {
-        lotes.remove(index);
+        if (index >= 0 && index < lotes.size()) {
+            lotes.remove(index);
+        }
     }
 
     @Override
